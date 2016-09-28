@@ -1,0 +1,603 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="今天在刷各大公司的笔试题，有好几道需要用到huffman编码的知识，所以，特意查资料记录一下　　Huffman Code:一种通过字符出现频率，Priority Queue，和二叉树来进行的一种压缩算法，这种二叉树又叫Huffman二叉树 —— 一种带权重的树。我们直接来看示例，如果我们需要来压缩下面的字符串：　　　　　　　　　 “beep boop beer!”　　首先，我们先计算出每个字符">
+<meta property="og:type" content="article">
+<meta property="og:title" content="huffman编码">
+<meta property="og:url" content="http://yoursite.com/2016/09/12/Huffman编码/index.html">
+<meta property="og:site_name" content="Code Dongjianyu">
+<meta property="og:description" content="今天在刷各大公司的笔试题，有好几道需要用到huffman编码的知识，所以，特意查资料记录一下　　Huffman Code:一种通过字符出现频率，Priority Queue，和二叉树来进行的一种压缩算法，这种二叉树又叫Huffman二叉树 —— 一种带权重的树。我们直接来看示例，如果我们需要来压缩下面的字符串：　　　　　　　　　 “beep boop beer!”　　首先，我们先计算出每个字符">
+<meta property="og:image" content="http://coolshell.cn//wp-content/uploads/2012/05/coada1.png">
+<meta property="og:image" content="http://coolshell.cn//wp-content/uploads/2012/05/coada2.png">
+<meta property="og:image" content="http://coolshell.cn//wp-content/uploads/2012/05/coada31.png">
+<meta property="og:image" content="http://coolshell.cn//wp-content/uploads/2012/05/coada4.png">
+<meta property="og:image" content="http://coolshell.cn//wp-content/uploads/2012/05/coada5.png">
+<meta property="og:image" content="http://coolshell.cn//wp-content/uploads/2012/05/coada61.png">
+<meta property="og:image" content="http://coolshell.cn//wp-content/uploads/2012/05/arbore_final.png">
+<meta property="og:image" content="http://coolshell.cn//wp-content/uploads/2012/05/arbore_final_numerotat.png">
+<meta property="og:updated_time" content="2016-09-12T13:03:37.411Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="huffman编码">
+<meta name="twitter:description" content="今天在刷各大公司的笔试题，有好几道需要用到huffman编码的知识，所以，特意查资料记录一下　　Huffman Code:一种通过字符出现频率，Priority Queue，和二叉树来进行的一种压缩算法，这种二叉树又叫Huffman二叉树 —— 一种带权重的树。我们直接来看示例，如果我们需要来压缩下面的字符串：　　　　　　　　　 “beep boop beer!”　　首先，我们先计算出每个字符">
+<meta name="twitter:image" content="http://coolshell.cn//wp-content/uploads/2012/05/coada1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/09/12/Huffman编码/"/>
+
+  <title> huffman编码 | Code Dongjianyu </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Code Dongjianyu</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                huffman编码
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-09-12T00:00:00+08:00" content="2016-09-12">
+              2016-09-12
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>　　今天在刷各大公司的笔试题，有好几道需要用到huffman编码的知识，所以，特意查资料记录一下<br>　　Huffman Code:一种通过字符出现频率，Priority Queue，和二叉树来进行的一种压缩算法，这种二叉树又叫Huffman二叉树 —— 一种带权重的树。<br>我们直接来看示例，如果我们需要来压缩下面的字符串：<br>　　　　　　　　　 “beep boop beer!”<br>　　首先，我们先计算出每个字符出现的次数，我们得到下面这样一张表 :</p>
+<p>　　　　　　　字　符　　　　　　　　　　　　　　　次数<br>　　　　　　　＇ｂ＇ 　　　　　　　　　　　　　　　３<br>　　　　　　　＇ｅ＇　　　　　　　　　　　　　　　４<br>　　　　　　　＇ｐ＇　　　　　　　　　　　　　　　２<br>　　　　　　　＂＂　　　　　　　　　　　　　　　　２<br>　　　　　　　＇ｏ＇　　　　　　　　　　　　　　　２<br>　　　　　　　＇ｒ＇　　　　　　　　　　　　　　　１<br>　　　　　　　＇！＇　　　　　　　　　　　　　　　１</p>
+<p>　　然后，我把把这些东西放到Priority Queue中（用出现的次数据当 priority），我们可以看到，Priority Queue 是以Prioirry排序一个数组，如果Priority一样，会使用出现的次序排序：下面是我们得到的Priority Queue：<br>  <img src="http://coolshell.cn//wp-content/uploads/2012/05/coada1.png" alt=""></p>
+<p>　　接下来就是我们的算法——把这个Priority Queue 转成二叉树。我们始终从queue的头取两个元素来构造一个二叉树（第一个元素是左结点，第二个是右结点），并把这两个元素的priority相加，并放回Priority中（再次注意，这里的Priority就是字符出现的次数），然后，我们得到下面的数据图表：<br>  <img src="http://coolshell.cn//wp-content/uploads/2012/05/coada2.png" alt=""><br>  同样，我们再把前两个取出来，形成一个Priority为2+2=4的结点，然后再放回Priority Queue中 :<br>  <img src="http://coolshell.cn//wp-content/uploads/2012/05/coada31.png" alt=""><br>  继续我们的算法（我们可以看到，这是一种自底向上的建树的过程）：<br>  <img src="http://coolshell.cn//wp-content/uploads/2012/05/coada4.png" alt=""><br>  <img src="http://coolshell.cn//wp-content/uploads/2012/05/coada5.png" alt=""><br>  <img src="http://coolshell.cn//wp-content/uploads/2012/05/coada61.png" alt=""><br> 最终我们会得到下面这样一棵二叉树：<br> <img src="http://coolshell.cn//wp-content/uploads/2012/05/arbore_final.png" alt=""></p>
+<p> 此时，我们把这个树的左支编码为0，右支编码为1，这样我们就可以遍历这棵树得到字符的编码，比如：‘b’的编码是 00，’p’的编码是101， ‘r’的编码是1000。我们可以看到出现频率越多的会越在上层，编码也越短，出现频率越少的就越在下层，编码也越长。<br> <img src="http://coolshell.cn//wp-content/uploads/2012/05/arbore_final_numerotat.png" alt=""></p>
+<p> 最终我们可以得到下面这张编码表：</p>
+<pre><code>字符　　　　　    编码
+‘b’    　　　　　　00
+‘e’    　　　　　　11
+‘p’    　　　　　　101
+‘ ‘    　　　　　　011
+‘o’    　　　　　　010
+‘r’    　　　　　　1000
+‘!’    　　　　　　1001
+‘e’    　　　　　　11
+‘p’    　　　　　　101
+‘ ‘    　　　　　　011
+‘o’    　　　　　　010
+‘r’    　　　　　　1000
+‘!’    　　　　　　1001
+</code></pre><p>　　这里需要注意一点，当我们encode的时候，我们是按“bit”来encode，decode也是通过bit来完成，比如，如果我们有这样的bitset “1011110111″ 那么其解码后就是 “pepe”。所以，我们需要通过这个二叉树建立我们Huffman编码和解码的字典表。<br>这里需要注意的一点是，我们的Huffman对各个字符的编码是不会冲突的，也就是说，不会存在某一个编码是另一个编码的前缀，不然的话就会大问题了。因为encode后的编码是没有分隔符的。</p>
+<p>　　Huffman编码Java实现<br>　　Huffman编码算法主要用到的数据结构是完全二叉树(full binary tree)和优先级队列。后者用的是java.util.PriorityQueue，前者自己实现(都为内部类)，代码如下:<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div></pre></td><td class="code"><pre><div class="line">static class Tree &#123;  </div><div class="line">        private Node root;  </div><div class="line">  </div><div class="line">        public Node getRoot() &#123;  </div><div class="line">            return root;  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        public void setRoot(Node root) &#123;  </div><div class="line">            this.root = root;  </div><div class="line">        &#125;  </div><div class="line">    &#125;  </div><div class="line">  </div><div class="line">    static class Node implements Comparable&lt;Node&gt; &#123;  </div><div class="line">        private String chars = &quot;&quot;;  </div><div class="line">        private int frequence = 0;  </div><div class="line">        private Node parent;  </div><div class="line">        private Node leftNode;  </div><div class="line">        private Node rightNode;  </div><div class="line">  </div><div class="line">        @Override  </div><div class="line">        public int compareTo(Node n) &#123;  </div><div class="line">            return frequence - n.frequence;  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        public boolean isLeaf() &#123;  </div><div class="line">            return chars.length() == 1;  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        public boolean isRoot() &#123;  </div><div class="line">            return parent == null;  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        public boolean isLeftChild() &#123;  </div><div class="line">            return parent != null &amp;&amp; this == parent.leftNode;  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        public int getFrequence() &#123;  </div><div class="line">            return frequence;  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        public void setFrequence(int frequence) &#123;  </div><div class="line">            this.frequence = frequence;  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        public String getChars() &#123;  </div><div class="line">            return chars;  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        public void setChars(String chars) &#123;  </div><div class="line">            this.chars = chars;  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        public Node getParent() &#123;  </div><div class="line">            return parent;  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        public void setParent(Node parent) &#123;  </div><div class="line">            this.parent = parent;  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        public Node getLeftNode() &#123;  </div><div class="line">            return leftNode;  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        public void setLeftNode(Node leftNode) &#123;  </div><div class="line">            this.leftNode = leftNode;  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        public Node getRightNode() &#123;  </div><div class="line">            return rightNode;  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        public void setRightNode(Node rightNode) &#123;  </div><div class="line">            this.rightNode = rightNode;  </div><div class="line">        &#125;  </div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>统计数据<br>既然要按频率来安排编码表，那么首先当然得获得频率的统计信息。我实现了一个方法处理这样的问题。如果已经有统计信息，那么转为Map<character,integer>即可。如果你得到的信息是百分比，乘以100或1000，或10000。总是可以转为整数。比如12.702%乘以1000为12702，Huffman编码只关心大小问题。统计方法实现如下：</character,integer></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">public static Map&lt;Character, Integer&gt; statistics(char[] charArray) &#123;  </div><div class="line">        Map&lt;Character, Integer&gt; map = new HashMap&lt;Character, Integer&gt;();  </div><div class="line">        for (char c : charArray) &#123;  </div><div class="line">            Character character = new Character(c);  </div><div class="line">            if (map.containsKey(character)) &#123;  </div><div class="line">                map.put(character, map.get(character) + 1);  </div><div class="line">            &#125; else &#123;  </div><div class="line">                map.put(character, 1);  </div><div class="line">            &#125;  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        return map;  </div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>构建树<br>构建树是Huffman编码算法的核心步骤。思想是把所有的字符挂到一颗完全二叉树的叶子节点，任何一个非页子节点的左节点出现频率不大于右节点。算法为把统计信息转为Node存放到一个优先级队列里面，每一次从队列里面弹出两个最小频率的节点，构建一个新的父Node(非叶子节点), 字符内容刚弹出来的两个节点字符内容之和，频率也是它们的和，最开始的弹出来的作为左子节点，后面一个作为右子节点，并且把刚构建的父节点放到队列里面。重复以上的动作N-1次，N为不同字符的个数(每一次队列里面个数减1)。结束以上步骤，队列里面剩一个节点，弹出作为树的根节点。代码如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">private static Tree buildTree(Map&lt;Character, Integer&gt; statistics,  </div><div class="line">            List&lt;Node&gt; leafs) &#123;  </div><div class="line">        Character[] keys = statistics.keySet().toArray(new Character[0]);  </div><div class="line">  </div><div class="line">        PriorityQueue&lt;Node&gt; priorityQueue = new PriorityQueue&lt;Node&gt;();  </div><div class="line">        for (Character character : keys) &#123;  </div><div class="line">            Node node = new Node();  </div><div class="line">            node.chars = character.toString();  </div><div class="line">            node.frequence = statistics.get(character);  </div><div class="line">            priorityQueue.add(node);  </div><div class="line">            leafs.add(node);  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        int size = priorityQueue.size();  </div><div class="line">        for (int i = 1; i &lt;= size - 1; i++) &#123;  </div><div class="line">            Node node1 = priorityQueue.poll();  </div><div class="line">            Node node2 = priorityQueue.poll();  </div><div class="line">  </div><div class="line">            Node sumNode = new Node();  </div><div class="line">            sumNode.chars = node1.chars + node2.chars;  </div><div class="line">            sumNode.frequence = node1.frequence + node2.frequence;  </div><div class="line">  </div><div class="line">            sumNode.leftNode = node1;  </div><div class="line">            sumNode.rightNode = node2;  </div><div class="line">  </div><div class="line">            node1.parent = sumNode;  </div><div class="line">            node2.parent = sumNode;  </div><div class="line">  </div><div class="line">            priorityQueue.add(sumNode);  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        Tree tree = new Tree();  </div><div class="line">        tree.root = priorityQueue.poll();  </div><div class="line">        return tree;  </div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>编码<br>某个字符对应的编码为，从该字符所在的叶子节点向上搜索，如果该字符节点是父节点的左节点，编码字符之前加0，反之如果是右节点，加1，直到根节点。只要获取了字符和二进制码之间的mapping关系，编码就非常简单。代码如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public static String encode(String originalStr,  </div><div class="line">            Map&lt;Character, Integer&gt; statistics) &#123;  </div><div class="line">        if (originalStr == null || originalStr.equals(&quot;&quot;)) &#123;  </div><div class="line">            return &quot;&quot;;  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        char[] charArray = originalStr.toCharArray();  </div><div class="line">        List&lt;Node&gt; leafNodes = new ArrayList&lt;Node&gt;();  </div><div class="line">        buildTree(statistics, leafNodes);  </div><div class="line">        Map&lt;Character, String&gt; encodInfo = buildEncodingInfo(leafNodes);  </div><div class="line">  </div><div class="line">        StringBuffer buffer = new StringBuffer();  </div><div class="line">        for (char c : charArray) &#123;  </div><div class="line">            Character character = new Character(c);  </div><div class="line">            buffer.append(encodInfo.get(character));  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        return buffer.toString();  </div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">private static Map&lt;Character, String&gt; buildEncodingInfo(List&lt;Node&gt; leafNodes) &#123;  </div><div class="line">        Map&lt;Character, String&gt; codewords = new HashMap&lt;Character, String&gt;();  </div><div class="line">        for (Node leafNode : leafNodes) &#123;  </div><div class="line">            Character character = new Character(leafNode.getChars().charAt(0));  </div><div class="line">            String codeword = &quot;&quot;;  </div><div class="line">            Node currentNode = leafNode;  </div><div class="line">  </div><div class="line">            do &#123;  </div><div class="line">                if (currentNode.isLeftChild()) &#123;  </div><div class="line">                    codeword = &quot;0&quot; + codeword;  </div><div class="line">                &#125; else &#123;  </div><div class="line">                    codeword = &quot;1&quot; + codeword;  </div><div class="line">                &#125;  </div><div class="line">  </div><div class="line">                currentNode = currentNode.parent;  </div><div class="line">            &#125; while (currentNode.parent != null);  </div><div class="line">  </div><div class="line">            codewords.put(character, codeword);  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        return codewords;  </div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>解码<br>因为Huffman编码算法能够保证任何的二进制码都不会是另外一个码的前缀，解码非常简单，依次取出二进制的每一位，从树根向下搜索，1向右，0向左，到了叶子节点(命中)，退回根节点继续重复以上动作。代码如下:</p>
+<p>[java] view plain copy<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">public static String decode(String binaryStr,  </div><div class="line">            Map&lt;Character, Integer&gt; statistics) &#123;  </div><div class="line">        if (binaryStr == null || binaryStr.equals(&quot;&quot;)) &#123;  </div><div class="line">            return &quot;&quot;;  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        char[] binaryCharArray = binaryStr.toCharArray();  </div><div class="line">        LinkedList&lt;Character&gt; binaryList = new LinkedList&lt;Character&gt;();  </div><div class="line">        int size = binaryCharArray.length;  </div><div class="line">        for (int i = 0; i &lt; size; i++) &#123;  </div><div class="line">            binaryList.addLast(new Character(binaryCharArray[i]));  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        List&lt;Node&gt; leafNodes = new ArrayList&lt;Node&gt;();  </div><div class="line">        Tree tree = buildTree(statistics, leafNodes);  </div><div class="line">  </div><div class="line">        StringBuffer buffer = new StringBuffer();  </div><div class="line">  </div><div class="line">        while (binaryList.size() &gt; 0) &#123;  </div><div class="line">            Node node = tree.root;  </div><div class="line">  </div><div class="line">            do &#123;  </div><div class="line">                Character c = binaryList.removeFirst();  </div><div class="line">                if (c.charValue() == &apos;0&apos;) &#123;  </div><div class="line">                    node = node.leftNode;  </div><div class="line">                &#125; else &#123;  </div><div class="line">                    node = node.rightNode;  </div><div class="line">                &#125;  </div><div class="line">            &#125; while (!node.isLeaf());  </div><div class="line">  </div><div class="line">            buffer.append(node.chars);  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        return buffer.toString();  </div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>测试以及比较<br>以下测试Huffman编码的正确性(先编码，后解码，包括中文)，以及Huffman编码与常见的字符编码的二进制字符串比较。代码如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">public static void main(String[] args) &#123;  </div><div class="line">        String oriStr = &quot;Huffman codes compress data very effectively: savings of 20% to 90% are typical, &quot;  </div><div class="line">                + &quot;depending on the characteristics of the data being compressed. 中华崛起&quot;;  </div><div class="line">        Map&lt;Character, Integer&gt; statistics = statistics(oriStr.toCharArray());  </div><div class="line">        String encodedBinariStr = encode(oriStr, statistics);  </div><div class="line">        String decodedStr = decode(encodedBinariStr, statistics);  </div><div class="line">  </div><div class="line">        System.out.println(&quot;Original sstring: &quot; + oriStr);  </div><div class="line">        System.out.println(&quot;Huffman encoed binary string: &quot; + encodedBinariStr);  </div><div class="line">        System.out.println(&quot;decoded string from binariy string: &quot; + decodedStr);  </div><div class="line">  </div><div class="line">        System.out.println(&quot;binary string of UTF-8: &quot;  </div><div class="line">                + getStringOfByte(oriStr, Charset.forName(&quot;UTF-8&quot;)));  </div><div class="line">        System.out.println(&quot;binary string of UTF-16: &quot;  </div><div class="line">                + getStringOfByte(oriStr, Charset.forName(&quot;UTF-16&quot;)));  </div><div class="line">        System.out.println(&quot;binary string of US-ASCII: &quot;  </div><div class="line">                + getStringOfByte(oriStr, Charset.forName(&quot;US-ASCII&quot;)));  </div><div class="line">        System.out.println(&quot;binary string of GB2312: &quot;  </div><div class="line">                + getStringOfByte(oriStr, Charset.forName(&quot;GB2312&quot;)));  </div><div class="line">    &#125;  </div><div class="line">  </div><div class="line">    public static String getStringOfByte(String str, Charset charset) &#123;  </div><div class="line">        if (str == null || str.equals(&quot;&quot;)) &#123;  </div><div class="line">            return &quot;&quot;;  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        byte[] byteArray = str.getBytes(charset);  </div><div class="line">        int size = byteArray.length;  </div><div class="line">        StringBuffer buffer = new StringBuffer();  </div><div class="line">        for (int i = 0; i &lt; size; i++) &#123;  </div><div class="line">            byte temp = byteArray[i];  </div><div class="line">            buffer.append(getStringOfByte(temp));  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        return buffer.toString();  </div><div class="line">    &#125;  </div><div class="line">  </div><div class="line">    public static String getStringOfByte(byte b) &#123;  </div><div class="line">        StringBuffer buffer = new StringBuffer();  </div><div class="line">        for (int i = 7; i &gt;= 0; i--) &#123;  </div><div class="line">            byte temp = (byte) ((b &gt;&gt; i) &amp; 0x1);  </div><div class="line">            buffer.append(String.valueOf(temp));  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">        return buffer.toString();  </div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>参考文章：　<a href="http://blog.csdn.net/kimylrong/article/details/17022319" target="_blank" rel="external">CSDN</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/11/RESTful 架构风格概述/" rel="next" title="【转】RESTful 架构风格概述">
+                <i class="fa fa-chevron-left"></i> 【转】RESTful 架构风格概述
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/20/算法复杂度分析/" rel="prev" title="算法复杂度分析">
+                算法复杂度分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://www.qq1234.org/uploads/allimg/150403/094200GL-14.jpg"
+               alt="dongjianyu" />
+          <p class="site-author-name" itemprop="name">dongjianyu</p>
+          <p class="site-description motion-element" itemprop="description">���������ò��㡡��ʱֻ����Ѱ��</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dongjianyu</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

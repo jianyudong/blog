@@ -1,0 +1,581 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="JSON," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="关于JSON　　　JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式。 易于人阅读和编写。同时也易于机器解析和生成。JSON采用完全独立于语言的文本格式，但是也使用了类似于C语言家族的习惯（包括C, C++, C#, Java, JavaScript, Perl, Python等）。 这些特性使JSON成为理想的数据交换语言。
+　　　JSON建构于两种结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JSON基础">
+<meta property="og:url" content="http://yoursite.com/2016/03/12/JSON基础/index.html">
+<meta property="og:site_name" content="Code Dongjianyu">
+<meta property="og:description" content="关于JSON　　　JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式。 易于人阅读和编写。同时也易于机器解析和生成。JSON采用完全独立于语言的文本格式，但是也使用了类似于C语言家族的习惯（包括C, C++, C#, Java, JavaScript, Perl, Python等）。 这些特性使JSON成为理想的数据交换语言。
+　　　JSON建构于两种结构">
+<meta property="og:updated_time" content="2016-09-10T12:03:50.039Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JSON基础">
+<meta name="twitter:description" content="关于JSON　　　JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式。 易于人阅读和编写。同时也易于机器解析和生成。JSON采用完全独立于语言的文本格式，但是也使用了类似于C语言家族的习惯（包括C, C++, C#, Java, JavaScript, Perl, Python等）。 这些特性使JSON成为理想的数据交换语言。
+　　　JSON建构于两种结构">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/03/12/JSON基础/"/>
+
+  <title> JSON基础 | Code Dongjianyu </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Code Dongjianyu</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                JSON基础
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-12T00:00:00+08:00" content="2016-03-12">
+              2016-03-12
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="关于JSON"><a href="#关于JSON" class="headerlink" title="关于JSON　"></a>关于JSON　</h2><p>　　JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式。 易于人阅读和编写。同时也易于机器解析和生成。JSON采用完全独立于语言的文本格式，但是也使用了类似于C语言家族的习惯（包括C, C++, C#, Java, JavaScript, Perl, Python等）。 这些特性使JSON成为理想的数据交换语言。</p>
+<p>　　　JSON建构于两种结构：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- 　名称/值”对的集合（A collection of name/value pairs）。不同的语言中，它被理解为对象（object），纪录（record），结构（struct），字典（dictionary），哈希表（hash table），有键列表（keyed list），或者关联数组 （associative array）</div><div class="line">- 　值的有序列表（An ordered list of values）。在大部分语言中，它被理解为数组（array）。</div></pre></td></tr></table></figure></p>
+<p>　　　这些都是常见的数据结构。事实上大部分现代计算机语言都以某种形式支持它们。这使得一种数据格式在同样基于这些结构的编程语言之间交换成为可能。</p>
+<h2 id="JSON-使用范围"><a href="#JSON-使用范围" class="headerlink" title="JSON 使用范围"></a>JSON 使用范围</h2><p>　　用于编写基于 JavaScript 应用程序，包括浏览器扩展和网站。<br>　　JSON 格式可以用于通过网络连接序列化和传输结构化数据。<br>　　主要用于在服务器和 Web 应用程序之间传输数据。<br>　　Web 服务和 APIs 可以使用 JSON 格式提供公用数据。<br>　　还可以用于现代编程语言中。</p>
+<h2 id="JSON格式"><a href="#JSON格式" class="headerlink" title="JSON格式"></a>JSON格式</h2><p>　　JSON能够以非常简单的方式来描述数据结构，XML能做的它都能做，因此在跨平台方面两者完全不分伯仲。</p>
+<p>　　<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">1、JSON只有两种数据类型描述符，大括号&#123;&#125;和方括号[]，其余英文冒号 : 是映射符，英文逗号 , 是分隔符，英文双引号 &quot;&quot; 是定义符。</div><div class="line"></div><div class="line">　　2、大括号&#123;&#125;用来描述一组“不同类型的无序键值对集合”（每个键值对可以理解为OOP的属性描述），方括号[]用来描述一组“相同类型的有序数据集合”（可对应OOP的数组）。</div><div class="line">  </div><div class="line">　　3、上述两种集合中若有多个子项，则通过英文逗号,进行分隔。</div><div class="line">  </div><div class="line">　　4、键值对以英文冒号 : 进行分隔，并且建议键名都加上英文双引号 &quot;&quot;，以便于不同语言的解析。</div><div class="line">  </div><div class="line">　　5、JSON内部常用数据类型无非就是字符串、数字、布尔、日期、null 这么几个，字符串必须用双引号引起来，其余的都不用，日期类型比较特殊，这里就不展开讲述了，只是建议如果客户端没有按日期排序功能需求的话，那么把日期时间直接作为字符串传递就好，可以省去很多麻烦。</div></pre></td></tr></table></figure></p>
+<h2 id="JSON示例"><a href="#JSON示例" class="headerlink" title="JSON示例"></a>JSON示例</h2>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line">// 描述一个人</div><div class="line"></div><div class="line">var person = &#123;</div><div class="line">    &quot;Name&quot;: &quot;Bob&quot;,</div><div class="line">    &quot;Age&quot;: 32,</div><div class="line">    &quot;Company&quot;: &quot;IBM&quot;,</div><div class="line">    &quot;Engineer&quot;: true</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 获取这个人的信息</div><div class="line"></div><div class="line">var personAge = person.Age;</div><div class="line"></div><div class="line">// 描述几个人</div><div class="line"></div><div class="line">var members = [</div><div class="line">    &#123;</div><div class="line">        &quot;Name&quot;: &quot;Bob&quot;,</div><div class="line">        &quot;Age&quot;: 32,</div><div class="line">        &quot;Company&quot;: &quot;IBM&quot;,</div><div class="line">        &quot;Engineer&quot;: true</div><div class="line">    &#125;,</div><div class="line">    &#123;</div><div class="line">        &quot;Name&quot;: &quot;John&quot;,</div><div class="line">        &quot;Age&quot;: 20,</div><div class="line">        &quot;Company&quot;: &quot;Oracle&quot;,</div><div class="line">        &quot;Engineer&quot;: false</div><div class="line">    &#125;,</div><div class="line">    &#123;</div><div class="line">        &quot;Name&quot;: &quot;Henry&quot;,</div><div class="line">        &quot;Age&quot;: 45,</div><div class="line">        &quot;Company&quot;: &quot;Microsoft&quot;,</div><div class="line">        &quot;Engineer&quot;: false</div><div class="line">    &#125;</div><div class="line">]</div><div class="line"></div><div class="line">// 读取其中John的公司名称</div><div class="line"></div><div class="line">var johnsCompany = members[1].Company;</div><div class="line"></div><div class="line">// 描述一次会议</div><div class="line"></div><div class="line">var conference = &#123;</div><div class="line">    &quot;Conference&quot;: &quot;Future Marketing&quot;,</div><div class="line">    &quot;Date&quot;: &quot;2012-6-1&quot;,</div><div class="line">    &quot;Address&quot;: &quot;Beijing&quot;,</div><div class="line">    &quot;Members&quot;: </div><div class="line">    [</div><div class="line">        &#123;</div><div class="line">            &quot;Name&quot;: &quot;Bob&quot;,</div><div class="line">            &quot;Age&quot;: 32,</div><div class="line">            &quot;Company&quot;: &quot;IBM&quot;,</div><div class="line">            &quot;Engineer&quot;: true</div><div class="line">        &#125;,</div><div class="line">        &#123;</div><div class="line">            &quot;Name&quot;: &quot;John&quot;,</div><div class="line">            &quot;Age&quot;: 20,</div><div class="line">            &quot;Company&quot;: &quot;Oracle&quot;,</div><div class="line">            &quot;Engineer&quot;: false</div><div class="line">        &#125;,</div><div class="line">        &#123;</div><div class="line">            &quot;Name&quot;: &quot;Henry&quot;,</div><div class="line">            &quot;Age&quot;: 45,</div><div class="line">            &quot;Company&quot;: &quot;Microsoft&quot;,</div><div class="line">            &quot;Engineer&quot;: false</div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>　　json格式的字符串、和json对象（对于什么时候称作json对象不做深究）的区别：</p>
+<p>　　json格式的字符串、很明显就是一个字符串、只具有字符串的特性和功能。只是格式上看起来像json对象而已、而不具有json对象所具有的功能（比如拿到　某个对象的某个属性的值）。<br>　　更多JSON的内容请参照JSON官方文档：<a href="http://www.json.org/json-zh.html" target="_blank" rel="external">json.org</a></p>
+<p>  参考文章：<a href="http://www.cnblogs.com/dowinning/archive/2012/04/19/json-jsonp-jquery.html" target="_blank" rel="external">博客园</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JSON/" rel="tag">#JSON</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/04/StringBuilder与StringBuffer源码分析/" rel="next" title="StringBuider与StringBuffer源码浅析">
+                <i class="fa fa-chevron-left"></i> StringBuider与StringBuffer源码浅析
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/26/悲观锁与乐观锁/" rel="prev" title="悲观锁与乐观锁">
+                悲观锁与乐观锁 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://www.qq1234.org/uploads/allimg/150403/094200GL-14.jpg"
+               alt="dongjianyu" />
+          <p class="site-author-name" itemprop="name">dongjianyu</p>
+          <p class="site-description motion-element" itemprop="description">���������ò��㡡��ʱֻ����Ѱ��</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于JSON"><span class="nav-number">1.</span> <span class="nav-text">关于JSON　</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSON-使用范围"><span class="nav-number">2.</span> <span class="nav-text">JSON 使用范围</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSON格式"><span class="nav-number">3.</span> <span class="nav-text">JSON格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSON示例"><span class="nav-number">4.</span> <span class="nav-text">JSON示例</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dongjianyu</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

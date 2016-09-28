@@ -1,0 +1,582 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="SQL," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="死锁（Deadlock）　　所谓死锁：是指两个或两个以上的进程在执行过程中，因争夺资源而造成的一种互相等待的现象，若无外力用，它们都将无法推进下去。此时称系统处于死锁状态或系统产生了死锁，这些永远在互相等待的进程称为死锁进程。《数据库系统概念》一书中对死锁的描述：如果存在一个事务集，该集合中的每个事务在等待该集合中的另一个事务，那么我们说系统处于死锁状态。更确切的说，存在一个等待事务集{T0,T1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL中死锁问题浅析">
+<meta property="og:url" content="http://yoursite.com/2016/04/25/MySQL中死锁问题的相关浅析/index.html">
+<meta property="og:site_name" content="Code Dongjianyu">
+<meta property="og:description" content="死锁（Deadlock）　　所谓死锁：是指两个或两个以上的进程在执行过程中，因争夺资源而造成的一种互相等待的现象，若无外力用，它们都将无法推进下去。此时称系统处于死锁状态或系统产生了死锁，这些永远在互相等待的进程称为死锁进程。《数据库系统概念》一书中对死锁的描述：如果存在一个事务集，该集合中的每个事务在等待该集合中的另一个事务，那么我们说系统处于死锁状态。更确切的说，存在一个等待事务集{T0,T1">
+<meta property="og:updated_time" content="2016-09-08T01:47:47.589Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL中死锁问题浅析">
+<meta name="twitter:description" content="死锁（Deadlock）　　所谓死锁：是指两个或两个以上的进程在执行过程中，因争夺资源而造成的一种互相等待的现象，若无外力用，它们都将无法推进下去。此时称系统处于死锁状态或系统产生了死锁，这些永远在互相等待的进程称为死锁进程。《数据库系统概念》一书中对死锁的描述：如果存在一个事务集，该集合中的每个事务在等待该集合中的另一个事务，那么我们说系统处于死锁状态。更确切的说，存在一个等待事务集{T0,T1">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/04/25/MySQL中死锁问题的相关浅析/"/>
+
+  <title> MySQL中死锁问题浅析 | Code Dongjianyu </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Code Dongjianyu</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                MySQL中死锁问题浅析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-04-25T00:00:00+08:00" content="2016-04-25">
+              2016-04-25
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="死锁（Deadlock）"><a href="#死锁（Deadlock）" class="headerlink" title="死锁（Deadlock）"></a>死锁（Deadlock）</h1><p>　　所谓死锁：是指两个或两个以上的进程在执行过程中，因争夺资源而造成的一种互相等待的现象，若无外力用，它们都将无法推进下去。此时称系统处于死锁状态或系统产生了死锁，这些永远在互相等待的进程称为死锁进程。《数据库系统概念》一书中对死锁的描述：如果存在一个事务集，该集合中的每个事务在等待该集合中的另一个事务，那么我们说系统处于死锁状态。更确切的说，存在一个等待事务集{T0,T1,T2…Tn}，其中T0在等待T1锁住的数据项，T1正在等待T2锁住的数据项，……，Tn-1正等待Tn锁住的数据项，且Tn正等待T0锁住的数据项。这种情况下，没有一个事务能取得进展。</p>
+<h2 id="MySQL常用存储引擎的锁机制"><a href="#MySQL常用存储引擎的锁机制" class="headerlink" title="MySQL常用存储引擎的锁机制"></a>MySQL常用存储引擎的锁机制</h2><p>　　MyISAM和MEMORY采用表级锁(table-level locking)<br>　　BDB采用页面锁(page-level locking)或表级锁，默认为页面锁<br>　　InnoDB支持行级锁(row-level locking)和表级锁,默认为行级锁</p>
+<h2 id="各种锁特点"><a href="#各种锁特点" class="headerlink" title="各种锁特点"></a>各种锁特点</h2><p>　　表级锁：开销小,加锁快;不会出现死锁;锁定粒度大,发生锁冲突的概率最高,并发度最低。<br>　　行级锁：开销大,加锁慢;会出现死锁;锁定粒度最小,发生锁冲突的概率最低,并发度也最高。<br>　　页面锁：开销和加锁时间界于表锁和行锁之间;会出现死锁;锁定粒度界于表锁和行锁之间,并发度一般。</p>
+<h2 id="各种锁的适用场景"><a href="#各种锁的适用场景" class="headerlink" title="各种锁的适用场景"></a>各种锁的适用场景</h2><p>　　表级锁更适合于以查询为主,只有少量按索引条件更新数据的应用,如Web应用。<br>　　行级锁则更适合于有大量按索引条件并发更新数据,同时又有并发查询的应用,如一些在线事务处理系统。</p>
+<h1 id="死锁的处理"><a href="#死锁的处理" class="headerlink" title="死锁的处理"></a>死锁的处理</h1><p>死锁处理通常有两种方法：<br>　　a.死锁预防（deadlock prevention）: 保证系统永远不进入死锁状态；<br>　　b.死锁检测（deadlock detection）及死锁恢复(deadlock recovery): 允许系统进入死锁状态，然后试用死多检测和死锁恢复机制进行恢复。<br>　　很容易看出，这两种方法都会引起事务回滚。具体以上两种方法的原理，请参考《数据库系统概念》一书，在此不多解释。<br>　　MySQL在死锁的处理上采用的是死锁检测，当检测到死锁后，选择其中代价较少的一个事务进行回滚。<br>　　MySQL5.6版本之前，死锁只能通过SHOW ENGINE INNODB STATUS命令，查看最后的一个死锁信息。当然可以定期采集死锁信息记录在某个文件中，Percona的pt-deadlock-logger工具可实现。MySQL5.6版本，有个新的参数innodb_print_all_deadlocks，可以控制将所有死锁信息输出到mysqld的error日志文件中。</p>
+<p>补充：比较好的习惯是，在应用中捕获deadlock error（MySQL error no. 1213）并且重试事务。</p>
+<h2 id="避免死锁的一些方法"><a href="#避免死锁的一些方法" class="headerlink" title="避免死锁的一些方法"></a>避免死锁的一些方法</h2><p>（1）合理安排表访问顺序。</p>
+<p>（2）在事务中尽量避免用户干预，尽量使一个事务处理的任务少些, 保持事务简短并在一个批处理中。</p>
+<p>（3）数据访问时域离散法, 数据访问时域离散法是指在客户机/服务器结构中，采取各种控制手段控制对数据库或数据库中的对象访问时间段。主要通过以下方式实现: 合理安排后台事务的执行时间，采用工作流对后台事务进行统一管理。工作流在管理任务时，一方面限制同一类任务的线程数（往往限制为1个），防止资源过多占用; 另一方面合理安排不同任务执行时序、时间，尽量避免多个后台任务同时执行，另外， 避免在前台交易高峰时间运行后台任务。</p>
+<p>（4）数据存储空间离散法。数据存储空间离散法是指采取各种手段，将逻辑上在一个表中的数据分散到若干离散的空间上去，以便改善对表的访问性能。主要通过以下方法实现: 第一，将大表按行或列分解为若干小表; 第二，按不同的用户群分解。</p>
+<p>（5）使用尽可能低的隔离性级别。隔离性级别是指为保证数据库数据的完整性和一致性而使多用户事务隔离的程度，SQL92定义了4种隔离性级别：未提交读、提交读、可重复读和可串行。如果选择过高的隔离性级别，如可串行，虽然系统可以因实现更好隔离性而更大程度上保证数据的完整性和一致性，但各事务间冲突而死锁的机会大大增加，大大影响了系统性能。</p>
+<p>（6）使用绑定连接, 绑定连接允许两个或多个事务连接共享事务和锁，而且任何一个事务连接要申请锁如同另外一个事务要申请锁一样，因此可以允许这些事务共享数据而不会有加锁的冲突。</p>
+<p>参考文章：</p>
+<p><a href="http://database.51cto.com/art/201108/286325.htm" target="_blank" rel="external">51CTO</a><br><a href="http://blog.chinaunix.net/uid-21335086-id-4653695.html" target="_blank" rel="external">Chainunix</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SQL/" rel="tag">#SQL</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/15/菲波那切数列/" rel="next" title="菲波那切数列">
+                <i class="fa fa-chevron-left"></i> 菲波那切数列
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/13/JSONP/" rel="prev" title="JSONP的实现原理">
+                JSONP的实现原理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://www.qq1234.org/uploads/allimg/150403/094200GL-14.jpg"
+               alt="dongjianyu" />
+          <p class="site-author-name" itemprop="name">dongjianyu</p>
+          <p class="site-description motion-element" itemprop="description">���������ò��㡡��ʱֻ����Ѱ��</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#死锁（Deadlock）"><span class="nav-number">1.</span> <span class="nav-text">死锁（Deadlock）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL常用存储引擎的锁机制"><span class="nav-number">1.1.</span> <span class="nav-text">MySQL常用存储引擎的锁机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#各种锁特点"><span class="nav-number">1.2.</span> <span class="nav-text">各种锁特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#各种锁的适用场景"><span class="nav-number">1.3.</span> <span class="nav-text">各种锁的适用场景</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#死锁的处理"><span class="nav-number">2.</span> <span class="nav-text">死锁的处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#避免死锁的一些方法"><span class="nav-number">2.1.</span> <span class="nav-text">避免死锁的一些方法</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dongjianyu</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

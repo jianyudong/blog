@@ -1,0 +1,593 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="数据结构与算法," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="分类：1）插入排序（直接插入排序、希尔排序）2）交换排序（冒泡排序、快速排序）3）选择排序（直接选择排序、堆排序）4）归并排序5）分配排序（基数排序）所需辅助空间最多：归并排序所需辅助空间最少：堆排序平均速度最快：快速排序不稳定：快速排序，希尔排序，堆排序。
+1.直接插入排序（1）基本思想：在要排序的一组数中，假设前面(n-1)[n&amp;gt;=2] 个数已经是排好顺序的，现在要把第n个数插到前面的有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java常用排序算法">
+<meta property="og:url" content="http://yoursite.com/2015/11/06/排序算法/index.html">
+<meta property="og:site_name" content="Code Dongjianyu">
+<meta property="og:description" content="分类：1）插入排序（直接插入排序、希尔排序）2）交换排序（冒泡排序、快速排序）3）选择排序（直接选择排序、堆排序）4）归并排序5）分配排序（基数排序）所需辅助空间最多：归并排序所需辅助空间最少：堆排序平均速度最快：快速排序不稳定：快速排序，希尔排序，堆排序。
+1.直接插入排序（1）基本思想：在要排序的一组数中，假设前面(n-1)[n&amp;gt;=2] 个数已经是排好顺序的，现在要把第n个数插到前面的有">
+<meta property="og:image" content="http://yoursite.com/file:///C:/Users/dong/Desktop/1347008904_9606.jpg">
+<meta property="og:updated_time" content="2016-09-07T07:27:05.300Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java常用排序算法">
+<meta name="twitter:description" content="分类：1）插入排序（直接插入排序、希尔排序）2）交换排序（冒泡排序、快速排序）3）选择排序（直接选择排序、堆排序）4）归并排序5）分配排序（基数排序）所需辅助空间最多：归并排序所需辅助空间最少：堆排序平均速度最快：快速排序不稳定：快速排序，希尔排序，堆排序。
+1.直接插入排序（1）基本思想：在要排序的一组数中，假设前面(n-1)[n&amp;gt;=2] 个数已经是排好顺序的，现在要把第n个数插到前面的有">
+<meta name="twitter:image" content="http://yoursite.com/file:///C:/Users/dong/Desktop/1347008904_9606.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2015/11/06/排序算法/"/>
+
+  <title> Java常用排序算法 | Code Dongjianyu </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Code Dongjianyu</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Java常用排序算法
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-11-06T00:00:00+08:00" content="2015-11-06">
+              2015-11-06
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>分类：<br>1）插入排序（直接插入排序、希尔排序）<br>2）交换排序（冒泡排序、快速排序）<br>3）选择排序（直接选择排序、堆排序）<br>4）归并排序<br>5）分配排序（基数排序）<br>所需辅助空间最多：归并排序<br>所需辅助空间最少：堆排序<br>平均速度最快：快速排序<br>不稳定：快速排序，希尔排序，堆排序。</p>
+<p><img src="file:///C:/Users/dong/Desktop/1347008904_9606.jpg" alt="如图"><br>1.直接插入排序<br>（1）基本思想：在要排序的一组数中，假设前面(n-1)[n&gt;=2] 个数已经是排<br>好顺序的，现在要把第n个数插到前面的有序数中，使得这n个数<br>也是排好顺序的。如此反复循环，直到全部排好顺序。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">package com.njue;  </div><div class="line">  </div><div class="line">publicclass insertSort &#123;  </div><div class="line">  </div><div class="line">public insertSort()&#123;  </div><div class="line">    inta[]=&#123;49,38,65,97,76,13,27,49,78,34,12,64,5,4,62,99,98,54,56,17,18,23,34,15,35,25,53,51&#125;;  </div><div class="line">    int temp=0;  </div><div class="line">    for(int i=1;i&lt;a.length;i++)&#123;  </div><div class="line">       int j=i-1;  </div><div class="line">       temp=a[i];  </div><div class="line">       for(;j&gt;=0&amp;&amp;temp&lt;a[j];j--)&#123;  </div><div class="line">           a[j+1]=a[j];  //将大于temp的值整体后移一个单位  </div><div class="line">       &#125;  </div><div class="line">       a[j+1]=temp;  </div><div class="line">    &#125;  </div><div class="line">  </div><div class="line">    for(int i=0;i&lt;a.length;i++)&#123;  </div><div class="line">       System.out.println(a[i]);  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<ol>
+<li>希尔排序（最小增量排序）<br>（1）基本思想：算法先将要排序的一组数按某个增量d（n/2,n为要排序数的个数）分成若干组，每组中记录的下标相差d.对每组中全部元素进行直接插入排序，然后再用一个较小的增量（d/2）对它进行分组，在每组中再进行直接插入排序。当增量减到1时，进行直接插入排序后，排序完成.</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">publicclass shellSort &#123;  </div><div class="line">  </div><div class="line">publicshellSort()&#123;  </div><div class="line">  </div><div class="line">    int a[]=&#123;1,54,6,3,78,34,12,45,56,100&#125;;  </div><div class="line">    double d1=a.length;  </div><div class="line">    int temp=0;  </div><div class="line">  </div><div class="line">    while(true)&#123;  </div><div class="line">       d1= Math.ceil(d1/2);  </div><div class="line">       int d=(int) d1;  </div><div class="line">       for(int x=0;x&lt;d;x++)&#123;  </div><div class="line">  </div><div class="line">           for(int i=x+d;i&lt;a.length;i+=d)&#123;  </div><div class="line">              int j=i-d;  </div><div class="line">              temp=a[i];  </div><div class="line">              for(;j&gt;=0&amp;&amp;temp&lt;a[j];j-=d)&#123;  </div><div class="line">                   a[j+d]=a[j];  </div><div class="line">              &#125;  </div><div class="line">              a[j+d]=temp;  </div><div class="line">           &#125;  </div><div class="line">       &#125;  </div><div class="line">  </div><div class="line">       if(d==1)&#123;  </div><div class="line">           break;  </div><div class="line">       &#125;  </div><div class="line">  </div><div class="line">    for(int i=0;i&lt;a.length;i++)&#123;  </div><div class="line">       System.out.println(a[i]);  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>3.简单选择排序<br>（1）基本思想：在要排序的一组数中，选出最小的一个数与第一个位置的数交换；<br>然后在剩下的数当中再找最小的与第二个位置的数交换，如此循环到倒数第二个数和最后一个数比较为止。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">publicclass selectSort &#123;  </div><div class="line">  </div><div class="line">    public selectSort()&#123;  </div><div class="line">       int a[]=&#123;1,54,6,3,78,34,12,45&#125;;  </div><div class="line">       int position=0;  </div><div class="line">       for(int i=0;i&lt;a.length;i++)&#123;       </div><div class="line">           int j=i+1;  </div><div class="line">           position=i;  </div><div class="line">           int temp=a[i];  </div><div class="line">           for(;j&lt;a.length;j++)&#123;  </div><div class="line">              if(a[j]&lt;temp)&#123;  </div><div class="line">                 temp=a[j];  </div><div class="line">                 position=j;  </div><div class="line">              &#125;  </div><div class="line">           &#125;  </div><div class="line">           a[position]=a[i];  </div><div class="line">           a[i]=temp;  </div><div class="line">       &#125;  </div><div class="line">  </div><div class="line">       for(int i=0;i&lt;a.length;i++)  </div><div class="line">           System.out.println(a[i]);  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>4，      堆排序<br>（1）基本思想：堆排序是一种树形选择排序，是对直接选择排序的有效改进。<br>堆的定义如下：具有n个元素的序列（h1,h2,…,hn),当且仅当满足（hi&gt;=h2i,hi&gt;=2i+1）或（hi&lt;=h2i,hi&lt;=2i+1）(i=1,2,…,n/2)时称之为堆。在这里只讨论满足前者条件的堆。由堆的定义可以看出，堆顶元素（即第一个元素）必为最大项（大顶堆）。完全二叉树可以很直观地表示堆的结构。堆顶为根，其它为左子树、右子树。初始时把要排序的数的序列看作是一棵顺序存储的二叉树，调整它们的存储序，使之成为一个堆，这时堆的根节点的数最大。然后将根节点与堆的最后一个节点交换。然后对前面(n-1)个数重新调整使之成为堆。依此类推，直到只有两个节点的堆，并对它们作交换，最后得到有n个节点的有序序列。从算法描述来看，堆排序需要两个过程，一是建立堆，二是堆顶与堆的最后一个元素交换位置。所以堆排序有两个函数组成。一是建堆的渗透函数，二是反复调用渗透函数实现排序的函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line">import java.util.Arrays;  </div><div class="line">  </div><div class="line">publicclass HeapSort &#123;  </div><div class="line">    inta[]=&#123;49,38,65,97,76,13,27,49,78,34,12,64,5,4,62,99,98,54,56,17,18,23,34,15,35,25,53,51&#125;;  </div><div class="line">    public  HeapSort()&#123;  </div><div class="line">       heapSort(a);  </div><div class="line">    &#125;  </div><div class="line">  </div><div class="line">    public  void heapSort(int[] a)&#123;  </div><div class="line">        System.out.println(&quot;开始排序&quot;);  </div><div class="line">        int arrayLength=a.length;  </div><div class="line">        //循环建堆  </div><div class="line">        for(int i=0;i&lt;arrayLength-1;i++)&#123;  </div><div class="line">            //建堆  </div><div class="line">            buildMaxHeap(a,arrayLength-1-i);  </div><div class="line">            //交换堆顶和最后一个元素  </div><div class="line">            swap(a,0,arrayLength-1-i);  </div><div class="line">            System.out.println(Arrays.toString(a));  </div><div class="line">        &#125;  </div><div class="line">    &#125;  </div><div class="line">  </div><div class="line">   </div><div class="line">  </div><div class="line">    private  void swap(int[] data, int i, int j) &#123;  </div><div class="line">        // TODO Auto-generated method stub  </div><div class="line">        int tmp=data[i];  </div><div class="line">        data[i]=data[j];  </div><div class="line">        data[j]=tmp;  </div><div class="line">    &#125;  </div><div class="line">  </div><div class="line">    //对data数组从0到lastIndex建大顶堆  </div><div class="line">    privatevoid buildMaxHeap(int[] data, int lastIndex) &#123;  </div><div class="line">        // TODO Auto-generated method stub  </div><div class="line">        //从lastIndex处节点（最后一个节点）的父节点开始  </div><div class="line">  </div><div class="line">        for(int i=(lastIndex-1)/2;i&gt;=0;i--)&#123;  </div><div class="line">            //k保存正在判断的节点  </div><div class="line">            int k=i;  </div><div class="line">            //如果当前k节点的子节点存在  </div><div class="line">            while(k*2+1&lt;=lastIndex)&#123;  </div><div class="line">                //k节点的左子节点的索引  </div><div class="line">                int biggerIndex=2*k+1;  </div><div class="line">                //如果biggerIndex小于lastIndex，即biggerIndex+1代表的k节点的右子节点存在  </div><div class="line">                if(biggerIndex&lt;lastIndex)&#123;  </div><div class="line">                    //若果右子节点的值较大  </div><div class="line">                    if(data[biggerIndex]&lt;data[biggerIndex+1])&#123;  </div><div class="line">                        //biggerIndex总是记录较大子节点的索引  </div><div class="line">                        biggerIndex++;  </div><div class="line">                    &#125;  </div><div class="line">                &#125;  </div><div class="line">  </div><div class="line">                //如果k节点的值小于其较大的子节点的值  </div><div class="line">               if(data[k]&lt;data[biggerIndex])&#123;  </div><div class="line">                    //交换他们  </div><div class="line">                    swap(data,k,biggerIndex);  </div><div class="line">                    //将biggerIndex赋予k，开始while循环的下一次循环，重新保证k节点的值大于其左右子节点的值  </div><div class="line">                    k=biggerIndex;  </div><div class="line">                &#125;else&#123;  </div><div class="line">                    break;  </div><div class="line">                &#125;  </div><div class="line">            &#125;  </div><div class="line">        &#125;  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>5.冒泡排序<br>（1）基本思想：在要排序的一组数中，对当前还未排好序的范围内的全部数，自上而下对相邻的两个数依次进行比较和调整，让较大的数往下沉，较小的往上冒。即：每当两相邻的数比较后发现它们的排序与排序要求相反时，就将它们互换。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">publicclass bubbleSort &#123;  </div><div class="line">  </div><div class="line">publicbubbleSort()&#123;  </div><div class="line">     inta[]=&#123;49,38,65,97,76,13,27,49,78,34,12,64,5,4,62,99,98,54,56,17,18,23,34,15,35,25,53,51&#125;;  </div><div class="line">    int temp=0;  </div><div class="line">    for(int i=0;i&lt;a.length-1;i++)&#123;  </div><div class="line">       for(int j=0;j&lt;a.length-1-i;j++)&#123;  </div><div class="line">         if(a[j]&gt;a[j+1])&#123;  </div><div class="line">           temp=a[j];  </div><div class="line">           a[j]=a[j+1];  </div><div class="line">           a[j+1]=temp;  </div><div class="line">         &#125;  </div><div class="line">       &#125;  </div><div class="line">    &#125;  </div><div class="line">  </div><div class="line">    for(int i=0;i&lt;a.length;i++)&#123;  </div><div class="line">       System.out.println(a[i]);    </div><div class="line">   &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>6.快速排序<br>（1）基本思想：选择一个基准元素,通常选择第一个元素或者最后一个元素,通过一趟扫描，将待排序列分成两部分,一部分比基准元素小,一部分大于等于基准元素,此时基准元素在其排好序后的正确位置,然后再用同样的方法递归地排序划分的两部分。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">publicclass quickSort &#123;  </div><div class="line">  </div><div class="line">  inta[]=&#123;49,38,65,97,76,13,27,49,78,34,12,64,5,4,62,99,98,54,56,17,18,23,34,15,35,25,53,51&#125;;  </div><div class="line">publicquickSort()&#123;  </div><div class="line">    quick(a);  </div><div class="line">    for(int i=0;i&lt;a.length;i++)&#123;  </div><div class="line">       System.out.println(a[i]);  </div><div class="line">    &#125;  </div><div class="line">&#125;  </div><div class="line">publicint getMiddle(int[] list, int low, int high) &#123;    </div><div class="line">            int tmp =list[low];    //数组的第一个作为中轴    </div><div class="line">            while (low &lt; high)&#123;    </div><div class="line">                while (low &lt; high&amp;&amp; list[high] &gt;= tmp) &#123;    </div><div class="line">                   high--;    </div><div class="line">                &#125;    </div><div class="line">  </div><div class="line">                list[low] =list[high];   //比中轴小的记录移到低端    </div><div class="line">                while (low &lt; high&amp;&amp; list[low] &lt;= tmp) &#123;    </div><div class="line">                    low++;    </div><div class="line">                &#125;    </div><div class="line">  </div><div class="line">                list[high] =list[low];   //比中轴大的记录移到高端    </div><div class="line">            &#125;    </div><div class="line">           list[low] = tmp;              //中轴记录到尾    </div><div class="line">            return low;                   //返回中轴的位置    </div><div class="line">&#125;   </div><div class="line">  </div><div class="line">publicvoid _quickSort(int[] list, int low, int high) &#123;    </div><div class="line">            if (low &lt; high)&#123;    </div><div class="line">               int middle =getMiddle(list, low, high);  //将list数组进行一分为二    </div><div class="line">               _quickSort(list, low, middle - 1);       //对低字表进行递归排序    </div><div class="line">               _quickSort(list,middle + 1, high);       //对高字表进行递归排序    </div><div class="line">            &#125;    </div><div class="line">&#125;  </div><div class="line">  </div><div class="line">publicvoid quick(int[] a2) &#123;    </div><div class="line">            if (a2.length &gt; 0) &#123;    //查看数组是否为空    </div><div class="line">                _quickSort(a2,0, a2.length - 1);    </div><div class="line">            &#125;    </div><div class="line">&#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>（1）基本排序：归并（Merge）排序法是将两个（或两个以上）有序表合并成一个新的有序表，即把待排序序列分为若干个子序列，每个子序列是有序的。然后再把有序子序列合并为整体有序序列。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line">import java.util.Arrays;  </div><div class="line">  </div><div class="line">publicclass mergingSort &#123;  </div><div class="line">  </div><div class="line">inta[]=&#123;49,38,65,97,76,13,27,49,78,34,12,64,5,4,62,99,98,54,56,17,18,23,34,15,35,25,53,51&#125;;  </div><div class="line">  </div><div class="line">publicmergingSort()&#123;  </div><div class="line">    sort(a,0,a.length-1);  </div><div class="line">    for(int i=0;i&lt;a.length;i++)  </div><div class="line">       System.out.println(a[i]);  </div><div class="line">&#125;  </div><div class="line">  </div><div class="line">publicvoid sort(int[] data, int left, int right) &#123;  </div><div class="line">    // TODO Auto-generatedmethod stub  </div><div class="line">    if(left&lt;right)&#123;  </div><div class="line">        //找出中间索引  </div><div class="line">        int center=(left+right)/2;  </div><div class="line">        //对左边数组进行递归  </div><div class="line">        sort(data,left,center);  </div><div class="line">        //对右边数组进行递归  </div><div class="line">        sort(data,center+1,right);  </div><div class="line">        //合并  </div><div class="line">        merge(data,left,center,right);         </div><div class="line">    &#125;  </div><div class="line">  </div><div class="line">&#125;  </div><div class="line">  </div><div class="line">publicvoid merge(int[] data, int left, int center, int right) &#123;  </div><div class="line">    // TODO Auto-generatedmethod stub  </div><div class="line">    int [] tmpArr=newint[data.length];  </div><div class="line">    int mid=center+1;  </div><div class="line">    //third记录中间数组的索引  </div><div class="line">    int third=left;  </div><div class="line">    int tmp=left;  </div><div class="line">    while(left&lt;=center&amp;&amp;mid&lt;=right)&#123;  </div><div class="line">        //从两个数组中取出最小的放入中间数组  </div><div class="line">        if(data[left]&lt;=data[mid])&#123;  </div><div class="line">            tmpArr[third++]=data[left++];  </div><div class="line">        &#125;else&#123;  </div><div class="line">            tmpArr[third++]=data[mid++];  </div><div class="line">        &#125;  </div><div class="line">  </div><div class="line">    &#125;  </div><div class="line">  </div><div class="line">    //剩余部分依次放入中间数组  </div><div class="line">    while(mid&lt;=right)&#123;  </div><div class="line">        tmpArr[third++]=data[mid++];  </div><div class="line">    &#125;  </div><div class="line">  </div><div class="line">    while(left&lt;=center)&#123;  </div><div class="line">        tmpArr[third++]=data[left++];  </div><div class="line">    &#125;  </div><div class="line">  </div><div class="line">    //将中间数组中的内容复制回原数组  </div><div class="line">    while(tmp&lt;=right)&#123;  </div><div class="line">        data[tmp]=tmpArr[tmp++];  </div><div class="line">    &#125;  </div><div class="line">    System.out.println(Arrays.toString(data));  </div><div class="line">&#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>8、基数排序</p>
+<p>（1）基本思想：将所有待比较数值（正整数）统一为同样的数位长度，数位较短的数前面补零。然后，从最低位开始，依次进行一次排序。这样从最低位排序一直到最高位排序完成以后,数列就变成一个有序序列。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line">import java.util.ArrayList;  </div><div class="line">import java.util.List;  </div><div class="line">  </div><div class="line">public class radixSort &#123;  </div><div class="line">    inta[]=&#123;49,38,65,97,76,13,27,49,78,34,12,64,5,4,62,99,98,54,101,56,17,18,23,34,15,35,25,53,51&#125;;  </div><div class="line">    public radixSort()&#123;  </div><div class="line">       sort(a);  </div><div class="line">       for(inti=0;i&lt;a.length;i++)&#123;  </div><div class="line">              System.out.println(a[i]);  </div><div class="line">       &#125;  </div><div class="line">    &#125;         </div><div class="line">    public  void sort(int[] array)&#123;    </div><div class="line">       //首先确定排序的趟数;    </div><div class="line">       int max=array[0];    </div><div class="line">       for(inti=1;i&lt;array.length;i++)&#123;    </div><div class="line">            if(array[i]&gt;max)&#123;    </div><div class="line">              max=array[i];    </div><div class="line">            &#125;    </div><div class="line">       &#125;    </div><div class="line">       int time=0;    </div><div class="line">       //判断位数;    </div><div class="line">       while(max&gt;0)&#123;    </div><div class="line">          max/=10;    </div><div class="line">           time++;    </div><div class="line">       &#125;    </div><div class="line">  </div><div class="line">        //建立10个队列;    </div><div class="line">       List&lt;ArrayList&gt; queue=newArrayList&lt;ArrayList&gt;();    </div><div class="line">       for(int i=0;i&lt;10;i++)&#123;    </div><div class="line">              ArrayList&lt;Integer&gt;queue1=new ArrayList&lt;Integer&gt;();  </div><div class="line">           queue.add(queue1);    </div><div class="line">       &#125;    </div><div class="line">  </div><div class="line">       //进行time次分配和收集;    </div><div class="line">       for(int i=0;i&lt;time;i++)&#123;    </div><div class="line">           //分配数组元素;    </div><div class="line">          for(intj=0;j&lt;array.length;j++)&#123;    </div><div class="line">               //得到数字的第time+1位数;  </div><div class="line">                 int x=array[j]%(int)Math.pow(10,i+1)/(int)Math.pow(10, i);  </div><div class="line">                 ArrayList&lt;Integer&gt;queue2=queue.get(x);  </div><div class="line">                 queue2.add(array[j]);  </div><div class="line">                 queue.set(x, queue2);  </div><div class="line">          &#125;   </div><div class="line">          int count=0;//元素计数器;    </div><div class="line">          //收集队列元素;    </div><div class="line">          for(int k=0;k&lt;10;k++)&#123;  </div><div class="line">               while(queue.get(k).size()&gt;0)&#123;  </div><div class="line">                   ArrayList&lt;Integer&gt;queue3=queue.get(k);  </div><div class="line">                   array[count]=queue3.get(0);    </div><div class="line">                   queue3.remove(0);  </div><div class="line">                   count++;  </div><div class="line">               &#125;   </div><div class="line">          &#125;    </div><div class="line">       &#125;               </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>本文转自：<br>　　　　<a href="http://blog.csdn.net/qy1387/article/details/7752973" target="_blank" rel="external">CSDN</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据结构与算法/" rel="tag">#数据结构与算法</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/15/MySQL储存过程/" rel="next" title="MySQL储存过程">
+                <i class="fa fa-chevron-left"></i> MySQL储存过程
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/11/27/Java集合框架/" rel="prev" title="Java集合类框架概述">
+                Java集合类框架概述 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://www.qq1234.org/uploads/allimg/150403/094200GL-14.jpg"
+               alt="dongjianyu" />
+          <p class="site-author-name" itemprop="name">dongjianyu</p>
+          <p class="site-description motion-element" itemprop="description">���������ò��㡡��ʱֻ����Ѱ��</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dongjianyu</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

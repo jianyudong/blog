@@ -1,0 +1,632 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="背景介绍　　在目前的JavaEE的开发框架中，你可以不用hibernate，可以不用struts2，但是你很少不用Spring或是借用Spring的思想.Spring已经成为JavaEE中的不可缺少的一部分。可以说Spring确实为Java的企业级开发带来了春天，由于学习所需之前买了一本大神所著的《Spring 实战》，一部大部头的著作，推荐大家阅读。好了，废话不说了。
+Spring IOC原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring IOC原理浅析">
+<meta property="og:url" content="http://yoursite.com/2016/06/09/SpringIOC原理浅析/index.html">
+<meta property="og:site_name" content="Code Dongjianyu">
+<meta property="og:description" content="背景介绍　　在目前的JavaEE的开发框架中，你可以不用hibernate，可以不用struts2，但是你很少不用Spring或是借用Spring的思想.Spring已经成为JavaEE中的不可缺少的一部分。可以说Spring确实为Java的企业级开发带来了春天，由于学习所需之前买了一本大神所著的《Spring 实战》，一部大部头的著作，推荐大家阅读。好了，废话不说了。
+Spring IOC原理">
+<meta property="og:updated_time" content="2016-09-08T02:02:07.506Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring IOC原理浅析">
+<meta name="twitter:description" content="背景介绍　　在目前的JavaEE的开发框架中，你可以不用hibernate，可以不用struts2，但是你很少不用Spring或是借用Spring的思想.Spring已经成为JavaEE中的不可缺少的一部分。可以说Spring确实为Java的企业级开发带来了春天，由于学习所需之前买了一本大神所著的《Spring 实战》，一部大部头的著作，推荐大家阅读。好了，废话不说了。
+Spring IOC原理">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/06/09/SpringIOC原理浅析/"/>
+
+  <title> Spring IOC原理浅析 | Code Dongjianyu </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Code Dongjianyu</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Spring IOC原理浅析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-06-09T21:28:55+08:00" content="2016-06-09">
+              2016-06-09
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h1><p>　　在目前的JavaEE的开发框架中，你可以不用hibernate，可以不用struts2，但是你很少不用Spring或是借用Spring的思想.Spring已经成为JavaEE中的不可缺少的一部分。可以说Spring确实为Java的企业级开发带来了春天，由于学习所需之前买了一本大神所著的《Spring 实战》，一部大部头的著作，推荐大家阅读。好了，废话不说了。</p>
+<h2 id="Spring-IOC原理"><a href="#Spring-IOC原理" class="headerlink" title="Spring IOC原理"></a>Spring IOC原理</h2><p>  　　2004年，Martin Fowler探讨了同一个问题，既然IOC是控制反转，那么到底是“哪些方面的控制被反转了呢？”，经过详细地分析和论证后，他得出了答案：“获得依赖对象的过程被反转了”。控制被反转之后，获得依赖对象的过程由自身管理变为了由IOC容器主动注入。于是，他给“控制反转”取了一个更合适的名字叫做“依赖注入（Dependency Injection）”。他的这个答案，实际上给出了实现IOC的方法：注入。所谓依赖注入，就是由IOC容器在运行期间，动态地将某种依赖关系注入到对象之中。</p>
+<p>　　说的简单一点就是：Spring容器来实现这些相互依赖对象的创建、协调工作。对象只需要关系业务逻辑本身就可以了。从这方面来说，对象如何得到他的协作对象的责任被反转了（IOC、DI）。</p>
+<p>　</p>
+ <a id="more"></a>
+<p>  下面我们通过一段代码来看看是如何工作的</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public static void main(String[] args) &#123;  </div><div class="line"></div><div class="line">        ApplicationContext context = new FileSystemXmlApplicationContext(  </div><div class="line"></div><div class="line">                &quot;applicationContext.xml&quot;);  </div><div class="line"></div><div class="line">        Animal animal = (Animal) context.getBean(&quot;animal&quot;);  </div><div class="line"></div><div class="line">        animal.say();  </div><div class="line"></div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>然后，我们在XML中配置ben</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;bean id=&quot;animal&quot; class=&quot;phz.springframework.test.Cat&quot;&gt;   </div><div class="line"></div><div class="line">        &lt;property name=&quot;name&quot; value=&quot;kitty&quot; /&gt;   </div><div class="line"></div><div class="line">    &lt;/bean&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public class Cat implements Animal &#123;   </div><div class="line"></div><div class="line">    private String name;   </div><div class="line"></div><div class="line">    public void say() &#123;   </div><div class="line"></div><div class="line">        System.out.println(&quot;I am &quot; + name + &quot;!&quot;);   </div><div class="line"></div><div class="line">    &#125;   </div><div class="line"></div><div class="line">    public void setName(String name) &#123;   </div><div class="line"></div><div class="line">        this.name = name;   </div><div class="line"></div><div class="line">    &#125;   </div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最后给出接口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public interface Animal &#123;   </div><div class="line"></div><div class="line">    public void say();   </div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行结果为：I am kitty! </p>
+<p>　　下面我们来看看Spring是如何完成上面的依赖注入的</p>
+<p>　　首先，我们先来定义一个bean来保存对象的属性</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">/* Bean Id */  </div><div class="line"></div><div class="line">  private String id;   </div><div class="line"></div><div class="line">  /* Bean Class */  </div><div class="line"></div><div class="line">  private String type;   </div><div class="line"></div><div class="line">  /* Bean Property */  </div><div class="line"></div><div class="line">  private Map&lt;String, Object&gt; properties = new HashMap&lt;String, Object&gt;();</div></pre></td></tr></table></figure>
+<p>然后Spring 就开始加载我们的配置文件了，将我们配置的信息保存在一个HashMap中，HashMap的key就是Bean 的 Id ，HasMap 的value是这个Bean。配置文件可以参考如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;bean id=&quot;test&quot; class=&quot;Test&quot;&gt;  </div><div class="line"></div><div class="line">        &lt;property name=&quot;testMap&quot;&gt;  </div><div class="line"></div><div class="line">            &lt;map&gt;  </div><div class="line"></div><div class="line">                &lt;entry key=&quot;a&quot;&gt;  </div><div class="line"></div><div class="line">                    &lt;value&gt;1&lt;/value&gt;  </div><div class="line"></div><div class="line">                &lt;/entry&gt;  </div><div class="line"></div><div class="line">                &lt;entry key=&quot;b&quot;&gt;  </div><div class="line"></div><div class="line">                    &lt;value&gt;2&lt;/value&gt;  </div><div class="line"></div><div class="line">                &lt;/entry&gt;  </div><div class="line"></div><div class="line">            &lt;/map&gt;  </div><div class="line"></div><div class="line">        &lt;/property&gt;  </div><div class="line"></div><div class="line">    &lt;/bean&gt;</div></pre></td></tr></table></figure>
+<p>接下来Spring通过如下代码来来保存配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">if (beanProperty.element(&quot;map&quot;) != null) &#123;   </div><div class="line"></div><div class="line">      Map&lt;String, Object&gt; propertiesMap = new HashMap&lt;String, Object&gt;();   </div><div class="line"></div><div class="line">      Element propertiesListMap = (Element) beanProperty.elements().get(0);   </div><div class="line"></div><div class="line">      Iterator&lt;?&gt; propertiesIterator = propertiesListMap.elements().iterator();   </div><div class="line"></div><div class="line">      while (propertiesIterator.hasNext()) &#123;   </div><div class="line"></div><div class="line">       Element vet = (Element) propertiesIterator.next();   </div><div class="line"></div><div class="line">           if (vet.getName().equals(&quot;entry&quot;)) &#123;   </div><div class="line"></div><div class="line">                 String key = vet.attributeValue(&quot;key&quot;);   </div><div class="line"></div><div class="line">                  Iterator&lt;?&gt; valuesIterator = vet.elements().iterator();   </div><div class="line"></div><div class="line">                            while (valuesIterator.hasNext()) &#123;   </div><div class="line"></div><div class="line">                                Element value = (Element) valuesIterator.next();   </div><div class="line"></div><div class="line">                                if (value.getName().equals(&quot;value&quot;)) &#123;   </div><div class="line"></div><div class="line">                                    propertiesMap.put(key, value.getText());   </div><div class="line"></div><div class="line">                                &#125;   </div><div class="line"></div><div class="line">                                if (value.getName().equals(&quot;ref&quot;)) &#123;   </div><div class="line"></div><div class="line">                                    propertiesMap.put(key, new String[] &#123; value   </div><div class="line"></div><div class="line">                                            .attributeValue(&quot;bean&quot;) &#125;);   </div><div class="line"></div><div class="line">                                &#125;   </div><div class="line"></div><div class="line">                            &#125;   </div><div class="line"></div><div class="line">                        &#125;   </div><div class="line"></div><div class="line">                    &#125;   </div><div class="line"></div><div class="line">                    bean.getProperties().put(name, propertiesMap);   </div><div class="line"></div><div class="line">                &#125;</div></pre></td></tr></table></figure>
+<p>　　然后通过反射机制实现的，在实例化一个类时，它通过反射调用类中set方法将事先保存在HashMap中的类属性注入到类中。</p>
+<p>  　　首先，实例化一个类</p>
+<pre><code>public static Object newInstance(String className) {  
+
+    Class&lt;?&gt; cls = null;  
+
+    Object obj = null;  
+
+    try {  
+
+        cls = Class.forName(className);  
+
+        obj = cls.newInstance();  
+
+    } catch (ClassNotFoundException e) {  
+
+        throw new RuntimeException(e);  
+
+    } catch (InstantiationException e) {  
+
+        throw new RuntimeException(e);  
+
+    } catch (IllegalAccessException e) {  
+
+        throw new RuntimeException(e);  
+
+    }  
+
+    return obj;  
+
+}  
+</code></pre><p>接着它将这个类的依赖注入进去</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public static void setProperty(Object obj, String name, String value) &#123;   </div><div class="line"></div><div class="line">        Class&lt;? extends Object&gt; clazz = obj.getClass();   </div><div class="line"></div><div class="line">        try &#123;   </div><div class="line"></div><div class="line">            String methodName = returnSetMthodName(name);   </div><div class="line"></div><div class="line">            Method[] ms = clazz.getMethods();   </div><div class="line"></div><div class="line">            for (Method m : ms) &#123;   </div><div class="line"></div><div class="line">                if (m.getName().equals(methodName)) &#123;   </div><div class="line"></div><div class="line">                    if (m.getParameterTypes().length == 1) &#123;   </div><div class="line"></div><div class="line">                        Class&lt;?&gt; clazzParameterType = m.getParameterTypes()[0];   </div><div class="line"></div><div class="line">                        setFieldValue(clazzParameterType.getName(), value, m,   </div><div class="line"></div><div class="line">                                obj);   </div><div class="line"></div><div class="line">                        break;   </div><div class="line"></div><div class="line">                    &#125;   </div><div class="line"></div><div class="line">                &#125;   </div><div class="line"></div><div class="line">            &#125;   </div><div class="line"></div><div class="line">        &#125; catch (SecurityException e) &#123;   </div><div class="line"></div><div class="line">            throw new RuntimeException(e);   </div><div class="line"></div><div class="line">        &#125; catch (IllegalArgumentException e) &#123;   </div><div class="line"></div><div class="line">            throw new RuntimeException(e);   </div><div class="line"></div><div class="line">        &#125; catch (IllegalAccessException e) &#123;   </div><div class="line"></div><div class="line">            throw new RuntimeException(e);   </div><div class="line"></div><div class="line">        &#125; catch (InvocationTargetException e) &#123;   </div><div class="line"></div><div class="line">            throw new RuntimeException(e);   </div><div class="line"></div><div class="line">        &#125;   </div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>　　最后它将这个类的实例返回给我们，我们就可以用了。我们还是以Map为例看看它是怎么做的，我写的代码里面是创建一个HashMap并把该HashMap注入到需要注入的类中，</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">if (value instanceof Map) &#123;  </div><div class="line"></div><div class="line">                Iterator&lt;?&gt; entryIterator = ((Map&lt;?, ?&gt;) value).entrySet()  </div><div class="line"></div><div class="line">                        .iterator();  </div><div class="line"></div><div class="line">                Map&lt;String, Object&gt; map = new HashMap&lt;String, Object&gt;();  </div><div class="line"></div><div class="line">                while (entryIterator.hasNext()) &#123;  </div><div class="line"></div><div class="line">                    Entry&lt;?, ?&gt; entryMap = (Entry&lt;?, ?&gt;) entryIterator.next();  </div><div class="line"></div><div class="line">                    if (entryMap.getValue() instanceof String[]) &#123;  </div><div class="line"></div><div class="line">                        map.put((String) entryMap.getKey(),  </div><div class="line"></div><div class="line">                                getBean(((String[]) entryMap.getValue())[0]));  </div><div class="line"></div><div class="line">                    &#125;  </div><div class="line"></div><div class="line">                &#125;  </div><div class="line"></div><div class="line">                BeanProcesser.setProperty(obj, property, map);  </div><div class="line"></div><div class="line">            &#125;</div></pre></td></tr></table></figure>
+<p>如此，Spring就完成了依赖注入的工作</p>
+<p>　　最后我们来介绍一下IOC容器都有哪些产品：</p>
+<p>  Sun ONE技术体系下的IOC容器有：轻量级的有Spring、Guice、Pico Container、Avalon、HiveMind；重量级的有EJB；不轻不重的有JBoss，Jdon等等。Spring框架作为Java开发中SSH(Struts、Spring、Hibernate)三剑客之一，大中小项目中都有使用，非常成熟，应用广泛，EJB在关键性的工业级项目中也被使用，比如某些电信业务。</p>
+<p>.Net技术体系下的IOC容器有：Spring.Net、Castle等等。Spring.Net是从Java的Spring移植过来的IOC容器，Castle的IOC容器就是Windsor部分。它们均是轻量级的框架，比较成熟，其中Spring.Net已经被逐渐应用于各种项目中。</p>
+<p>　　</p>
+<p>后记：在《Spring实战》中作者不推荐用XML的方式来配置bean，而是通过java代码的方式来配置，但是由于本人一开始解接触率XML的方式，所以很难改过来了，不知道在如今的大型商业项目中程序员们都是用哪种方式来进行开发的</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag">#java</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/13/JSONP/" rel="next" title="JSONP的实现原理">
+                <i class="fa fa-chevron-left"></i> JSONP的实现原理
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/11/RESTful 架构风格概述/" rel="prev" title="【转】RESTful 架构风格概述">
+                【转】RESTful 架构风格概述 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://www.qq1234.org/uploads/allimg/150403/094200GL-14.jpg"
+               alt="dongjianyu" />
+          <p class="site-author-name" itemprop="name">dongjianyu</p>
+          <p class="site-description motion-element" itemprop="description">���������ò��㡡��ʱֻ����Ѱ��</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景介绍"><span class="nav-number">1.</span> <span class="nav-text">背景介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-IOC原理"><span class="nav-number">1.1.</span> <span class="nav-text">Spring IOC原理</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dongjianyu</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

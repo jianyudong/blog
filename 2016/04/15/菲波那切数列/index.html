@@ -1,0 +1,585 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="数据结构与算法," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="以前我是对这一类基本的算法是不在意的，但是最近意识到一些数学的思想还是很重要的，所以特意学习记录一下，好了废话不说了，我们看看维基百科对“菲波那切数列”是如何定义的
+
+费波那契数列（意大利语：Successione di Fibonacci），又译费波拿契数、斐波那契数列、费氏数列、黄金分割数列。在数学上，费波那契数列是以递归的方法来定义： F{0}=0 F_{1}=1 F{n}=F{n-1}">
+<meta property="og:type" content="article">
+<meta property="og:title" content="菲波那切数列">
+<meta property="og:url" content="http://yoursite.com/2016/04/15/菲波那切数列/index.html">
+<meta property="og:site_name" content="Code Dongjianyu">
+<meta property="og:description" content="以前我是对这一类基本的算法是不在意的，但是最近意识到一些数学的思想还是很重要的，所以特意学习记录一下，好了废话不说了，我们看看维基百科对“菲波那切数列”是如何定义的
+
+费波那契数列（意大利语：Successione di Fibonacci），又译费波拿契数、斐波那契数列、费氏数列、黄金分割数列。在数学上，费波那契数列是以递归的方法来定义： F{0}=0 F_{1}=1 F{n}=F{n-1}">
+<meta property="og:updated_time" content="2016-09-16T01:42:59.615Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="菲波那切数列">
+<meta name="twitter:description" content="以前我是对这一类基本的算法是不在意的，但是最近意识到一些数学的思想还是很重要的，所以特意学习记录一下，好了废话不说了，我们看看维基百科对“菲波那切数列”是如何定义的
+
+费波那契数列（意大利语：Successione di Fibonacci），又译费波拿契数、斐波那契数列、费氏数列、黄金分割数列。在数学上，费波那契数列是以递归的方法来定义： F{0}=0 F_{1}=1 F{n}=F{n-1}">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/04/15/菲波那切数列/"/>
+
+  <title> 菲波那切数列 | Code Dongjianyu </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Code Dongjianyu</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                菲波那切数列
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-04-15T00:00:00+08:00" content="2016-04-15">
+              2016-04-15
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>　　以前我是对这一类基本的算法是不在意的，但是最近意识到一些数学的思想还是很重要的，所以特意学习记录一下，好了废话不说了，我们看看维基百科对“菲波那切数列”是如何定义的</p>
+<blockquote>
+<p>费波那契数列（意大利语：Successione di Fibonacci），又译费波拿契数、斐波那契数列、费氏数列、黄金分割数列。<br>在数学上，费波那契数列是以递归的方法来定义：<br> F{0}=0<br> F_{1}=1<br> F{n}=F{n-1}+F{n-2}<br>用文字来说，就是费波那契数列由0和1开始，之后的费波那契系数就由之前的两数相加。首几个费波那契系数是：<br>0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233……（OEIS中的数列A000045）<br>特别指出：0不是第一项，而是第零项。</p>
+</blockquote>
+<p>其实不难看出，我们首先想到的是用递归的思想来实现菲波那切数列，如下代码所示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">public class Solution &#123;</div><div class="line">    public int JumpFloor(int target) &#123;</div><div class="line">        if (target &lt;= 0) &#123;</div><div class="line">            return -1;</div><div class="line">        &#125; else if (target == 1) &#123;</div><div class="line">            return 1;</div><div class="line">        &#125; else if (target ==2) &#123;</div><div class="line">            return 2;</div><div class="line">        &#125; else &#123;</div><div class="line">            return  JumpFloor(target-1)+JumpFloor(target-2);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>但是对于递归有个很大的缺点就是：该算法的时间复杂度随着n值呈指数增长<br>我们来看看另一种方法来实现菲波那切数列<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">#include&lt;iostream&gt;</div><div class="line"> 2 #include&lt;string&gt;</div><div class="line"> 3 using namespace std;</div><div class="line"> 4 </div><div class="line"> 5 long Fibonacci(unsigned int n)</div><div class="line"> 6 &#123;</div><div class="line"> 7     if(n == 0)</div><div class="line"> 8         return 0;</div><div class="line"> 9     if(n == 1)</div><div class="line">10         return 1;</div><div class="line">11     long firstItem = 0;</div><div class="line">12     long secondItem = 1;</div><div class="line">13     long fib = 0;</div><div class="line">14     unsigned int cnt = 1;</div><div class="line">15     while(cnt &lt; n)</div><div class="line">16     &#123;</div><div class="line">17         fib = firstItem + secondItem;</div><div class="line">18         firstItem = secondItem;</div><div class="line">19         secondItem = fib;</div><div class="line">20         ++cnt;</div><div class="line">21     &#125;</div><div class="line">22     return fib;</div><div class="line">23 &#125;</div></pre></td></tr></table></figure></p>
+<p>最后我们来看一个变态的跳台阶的问题<br>一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法。<br>以下解析过程源自牛课网的：<a href="http://www.nowcoder.com/questionTerminal/22243d016f6b47f2a6928b4313c85387" target="_blank" rel="external">dangle</a></p>
+<blockquote>
+<p>f(1) = 1<br>f(2) = f(2-1) + f(2-2)         //f(2-2) 表示2阶一次跳2阶的次数。<br>f(3) = f(3-1) + f(3-2) + f(3-3)<br>…<br>f(n) = f(n-1) + f(n-2) + f(n-3) + … + f(n-(n-1)) + f(n-n)<br>说明：<br>1）这里的f(n) 代表的是n个台阶有一次1,2,…n阶的 跳法数。<br>2）n = 1时，只有1种跳法，f(1) = 1<br>3) n = 2时，会有两个跳得方式，一次1阶或者2阶，这回归到了问题（1） ，f(2) = f(2-1) + f(2-2)<br>4) n = 3时，会有三种跳得方式，1阶、2阶、3阶，<br>    那么就是第一次跳出1阶后面剩下：f(3-1);第一次跳出2阶，剩下f(3-2)；第一次3阶，那么剩下f(3-3)<br>    因此结论是f(3) = f(3-1)+f(3-2)+f(3-3)<br>5) n = n时，会有n中跳的方式，1阶、2阶…n阶，得出结论：<br>    f(n) = f(n-1)+f(n-2)+…+f(n-(n-1)) + f(n-n) =&gt; f(0) + f(1) + f(2) + f(3) + … + f(n-1)<br>6) 由以上已经是一种结论，但是为了简单，我们可以继续简化：<br>    f(n-1) = f(0) + f(1)+f(2)+f(3) + … + f((n-1)-1) = f(0) + f(1) + f(2) + f(3) + … + f(n-2)<br>    f(n) = f(0) + f(1) + f(2) + f(3) + … + f(n-2) + f(n-1) = f(n-1) + f(n-1)<br>    可以得出：<br>    f(n) = 2<em>f(n-1)<br>7) 得出最终结论,在n阶台阶，一次有1、2、…n阶的跳的方式时，总得跳法为：<br>              | 1       ,(n=0 )<br>f(n) =     | 1       ,(n=1 )<br>              | 2</em>f(n-1),(n&gt;=2)</p>
+</blockquote>
+<p>那么根据以上分析，我们可以很轻松的给出代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">public class Solution &#123;</div><div class="line">    public int JumpFloorII(int target) &#123;</div><div class="line">        if (target &lt;= 0) &#123;</div><div class="line">            return -1;</div><div class="line">        &#125; else if (target == 1) &#123;</div><div class="line">            return 1;</div><div class="line">        &#125; else &#123;</div><div class="line">            return 2 * JumpFloorII(target - 1);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据结构与算法/" rel="tag">#数据结构与算法</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/10/数据库三范式/" rel="next" title="数据库三范式简介">
+                <i class="fa fa-chevron-left"></i> 数据库三范式简介
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/25/MySQL中死锁问题的相关浅析/" rel="prev" title="MySQL中死锁问题浅析">
+                MySQL中死锁问题浅析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://www.qq1234.org/uploads/allimg/150403/094200GL-14.jpg"
+               alt="dongjianyu" />
+          <p class="site-author-name" itemprop="name">dongjianyu</p>
+          <p class="site-description motion-element" itemprop="description">���������ò��㡡��ʱֻ����Ѱ��</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dongjianyu</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,593 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="StringBuilder与StringBuffer是两个常用的操作字符串的类。大家都知道，StringBuilder是线程不安全的，而StringBuffer是线程安全的。前者是JDK1.5加入的，后者在JDK1.0就有了。下面分析一下它们的内部实现。
+继承关系1234567public final class StringBufferextends AbstractStringBuilde">
+<meta property="og:type" content="article">
+<meta property="og:title" content="StringBuider与StringBuffer源码浅析">
+<meta property="og:url" content="http://yoursite.com/2016/02/04/StringBuilder与StringBuffer源码分析/index.html">
+<meta property="og:site_name" content="Code Dongjianyu">
+<meta property="og:description" content="StringBuilder与StringBuffer是两个常用的操作字符串的类。大家都知道，StringBuilder是线程不安全的，而StringBuffer是线程安全的。前者是JDK1.5加入的，后者在JDK1.0就有了。下面分析一下它们的内部实现。
+继承关系1234567public final class StringBufferextends AbstractStringBuilde">
+<meta property="og:updated_time" content="2016-09-11T07:28:20.571Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="StringBuider与StringBuffer源码浅析">
+<meta name="twitter:description" content="StringBuilder与StringBuffer是两个常用的操作字符串的类。大家都知道，StringBuilder是线程不安全的，而StringBuffer是线程安全的。前者是JDK1.5加入的，后者在JDK1.0就有了。下面分析一下它们的内部实现。
+继承关系1234567public final class StringBufferextends AbstractStringBuilde">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/02/04/StringBuilder与StringBuffer源码分析/"/>
+
+  <title> StringBuider与StringBuffer源码浅析 | Code Dongjianyu </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Code Dongjianyu</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                StringBuider与StringBuffer源码浅析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-02-04T00:00:00+08:00" content="2016-02-04">
+              2016-02-04
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>　　StringBuilder与StringBuffer是两个常用的操作字符串的类。大家都知道，StringBuilder是线程不安全的，而StringBuffer是线程安全的。前者是JDK1.5加入的，后者在JDK1.0就有了。下面分析一下它们的内部实现。</p>
+<h2 id="继承关系"><a href="#继承关系" class="headerlink" title="继承关系"></a>继承关系</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public final class StringBuffer</div><div class="line">extends AbstractStringBuilder</div><div class="line">implements java.io.Serializable, CharSequence</div><div class="line"></div><div class="line">public final class StringBuilder</div><div class="line">extends AbstractStringBuilder</div><div class="line">implements java.io.Serializable, CharSequence</div></pre></td></tr></table></figure>
+<p>　　可以看到，两个类的继承关系是一模一样的。Serializable是可以序列化的标志。CharSequence接口包含了charAt()、length() 、subSequence()、toString()这几个方法，String类也实现了这个接口。这里的重点是抽象类AbstractStringBuilder，这个类封装了StringBuilder和StringBuffer大部分操作的实现。</p>
+<h2 id="AbstractStringBuilder"><a href="#AbstractStringBuilder" class="headerlink" title="AbstractStringBuilder"></a>AbstractStringBuilder</h2><h4 id="变量及构造方法"><a href="#变量及构造方法" class="headerlink" title="变量及构造方法"></a>变量及构造方法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">char[] value;</div><div class="line">int count;</div><div class="line">AbstractStringBuilder() &#123;</div><div class="line">&#125;</div><div class="line">AbstractStringBuilder(int capacity) &#123;</div><div class="line">    value = new char[capacity];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>AbstractStringBuilder内部用一个char[]数组保存字符串，可以在构造的时候指定初始容量方法。</p>
+<h2 id="扩容"><a href="#扩容" class="headerlink" title="扩容"></a>扩容</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">public void ensureCapacity(int minimumCapacity) &#123;</div><div class="line">    if (minimumCapacity &gt; 0)</div><div class="line">        ensureCapacityInternal(minimumCapacity);</div><div class="line">&#125;</div><div class="line"> private void ensureCapacityInternal(int minimumCapacity) &#123;</div><div class="line">    // overflow-conscious code</div><div class="line">    if (minimumCapacity - value.length &gt; 0)</div><div class="line">        expandCapacity(minimumCapacity);</div><div class="line">&#125;</div><div class="line">void expandCapacity(int minimumCapacity) &#123;</div><div class="line">    int newCapacity = value.length * 2 + 2;</div><div class="line">    if (newCapacity - minimumCapacity &lt; 0)</div><div class="line">        newCapacity = minimumCapacity;</div><div class="line">    if (newCapacity &lt; 0) &#123;</div><div class="line">        if (minimumCapacity &lt; 0) // overflow</div><div class="line">            throw new OutOfMemoryError();</div><div class="line">        newCapacity = Integer.MAX_VALUE;</div><div class="line">    &#125;</div><div class="line">    value = Arrays.copyOf(value, newCapacity);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>　　扩容的方法最终是由expandCapacity()实现的，在这个方法中首先把容量扩大为原来的容量加2，如果此时仍小于指定的容量，那么就把新的容量设为minimumCapacity。然后判断是否溢出，如果溢出了，把容量设为Integer.MAX_VALUE。最后把value值进行拷贝，这显然是耗时操作</p>
+<h4 id="append-方法"><a href="#append-方法" class="headerlink" title="append()方法"></a>append()方法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public AbstractStringBuilder append(String str) &#123;</div><div class="line">        if (str == null)</div><div class="line">            return appendNull();</div><div class="line">        int len = str.length();</div><div class="line">        ensureCapacityInternal(count + len);</div><div class="line">        str.getChars(0, len, value, count);</div><div class="line">        count += len;</div><div class="line">        return this;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>　　append()是最常用的方法，它有很多形式的重载。上面是其中一种，用于追加字符串。如果str是null,则会调用appendNull()方法。这个方法其实是追加了’n’、’u’、’l’、’l’这几个字符。如果不是null，则首先扩容，然后调用String的getChars()方法将str追加到value末尾。最后返回对象本身，所以append()可以连续调用。</p>
+<h2 id="StringBuilder"><a href="#StringBuilder" class="headerlink" title="StringBuilder"></a>StringBuilder</h2><p>　　AbstractStringBuilder已经实现了大部分需要的方法，StringBuilder和StringBuffer只需要调用即可。下面来看看StringBuilder的实现。</p>
+<h4 id="构造器"><a href="#构造器" class="headerlink" title="构造器"></a>构造器</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">public StringBuilder() &#123;</div><div class="line">    super(16);</div><div class="line">&#125;</div><div class="line">public StringBuilder(int capacity) &#123;</div><div class="line">    super(capacity);</div><div class="line">&#125;</div><div class="line">public StringBuilder(String str) &#123;</div><div class="line">    super(str.length() + 16);</div><div class="line">    append(str);</div><div class="line">&#125;</div><div class="line">public StringBuilder(CharSequence seq) &#123;</div><div class="line">    this(seq.length() + 16);</div><div class="line">    append(seq);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>　　可以看出，StringBuilder默认的容量大小为16。当然也可以指定初始容量，或者以一个已有的字符序列给StringBuilder对象赋初始值。</p>
+<h4 id="append-方法-1"><a href="#append-方法-1" class="headerlink" title="append()方法"></a>append()方法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public StringBuilder append(String str) &#123;</div><div class="line">    super.append(str);</div><div class="line">    return this;</div><div class="line">&#125;</div><div class="line">public StringBuilder append(CharSequence s) &#123;</div><div class="line">    super.append(s);</div><div class="line">    return this;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>　　append()的重载方法很多，这里随便列举了两个。显然，这里是直接调用的父类AbstractStringBuilder中的方法。</p>
+<h4 id="toString-NaN"><a href="#toString-NaN" class="headerlink" title="toString()"></a>toString()</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"> public String toString() &#123;</div><div class="line">    // Create a copy, don&apos;t share the array</div><div class="line">    return new String(value, 0, count);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>toString()方法返回了一个新的String对象，与原来的对象不共享内存。其实AbstractStringBuilder中的subString()方法也是如此。</p>
+<h2 id="SringBuffer"><a href="#SringBuffer" class="headerlink" title="SringBuffer"></a>SringBuffer</h2><p>　　StiringBuffer跟StringBuilder类似，只不过为了实现同步，很多方法使用lSynchronized修饰，如下面的方法：<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public synchronized int length() &#123;</div><div class="line">        return count;</div><div class="line">&#125;</div><div class="line">public synchronized StringBuffer append(String str) &#123;</div><div class="line">    toStringCache = null;</div><div class="line">    super.append(str);</div><div class="line">    return this;</div><div class="line">&#125;</div><div class="line">public synchronized void setLength(int newLength) &#123;</div><div class="line">    toStringCache = null;</div><div class="line">    super.setLength(newLength);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>　　可以看到，方法前面确实加了Synchronized。<br>　　另外，在上面的append()以及setLength()方法里面还有个变量toStringCache。这个变量是用于最近一次toString()方法的缓存，任何时候只要StringBuffer被修改了这个变量会被赋值为null。StringBuffer的toString如下：<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public synchronized String toString() &#123;</div><div class="line">    if (toStringCache == null) &#123;</div><div class="line">        toStringCache = Arrays.copyOfRange(value, 0, count);</div><div class="line">    &#125;</div><div class="line">    return new String(toStringCache, true);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>　　在这个方法中，如果toStringCache为null则先缓存。最终返回的String对象有点不同，这个构造方法还有个参数true。找到String的源码看一下：<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"> String(char[] value, boolean share) &#123;</div><div class="line">    // assert share : &quot;unshared not supported&quot;;</div><div class="line">    this.value = value;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>　　原来这个构造方法构造出来的String对象并没有实际复制字符串，只是把value指向了构造参数，这是为了节省复制元素的时间。不过这个构造器是具有包访问权限，一般情况下是不能调用的。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>StringBuilder和StringBuffer都是可变字符串，前者线程不安全，后者线程安全。<br>StringBuilder和StringBuffer的大部分方法均调用父类AbstractStringBuilder的实现。其扩容机制首先是把容量变为原来容量的2倍加2。最大容量是Integer.MAX_VALUE，也就是0x7fffffff。<br>StringBuilder和StringBuffer的默认容量都是16，最好预先估计好字符串的大小避免扩容带来的时间消耗。</p>
+<p>原文地址：<a href="https://segmentfault.com/a/1190000004261063" target="_blank" rel="external">然则</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag">#java</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/12/20/Java动态代理(JDK实现)/" rel="next" title="Java动态代理(JDK实现)">
+                <i class="fa fa-chevron-left"></i> Java动态代理(JDK实现)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/12/JSON基础/" rel="prev" title="JSON基础">
+                JSON基础 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://www.qq1234.org/uploads/allimg/150403/094200GL-14.jpg"
+               alt="dongjianyu" />
+          <p class="site-author-name" itemprop="name">dongjianyu</p>
+          <p class="site-description motion-element" itemprop="description">���������ò��㡡��ʱֻ����Ѱ��</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#继承关系"><span class="nav-number">1.</span> <span class="nav-text">继承关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AbstractStringBuilder"><span class="nav-number">2.</span> <span class="nav-text">AbstractStringBuilder</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#变量及构造方法"><span class="nav-number">2.0.1.</span> <span class="nav-text">变量及构造方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩容"><span class="nav-number">3.</span> <span class="nav-text">扩容</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#append-方法"><span class="nav-number">3.0.1.</span> <span class="nav-text">append()方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#StringBuilder"><span class="nav-number">4.</span> <span class="nav-text">StringBuilder</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#构造器"><span class="nav-number">4.0.1.</span> <span class="nav-text">构造器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#append-方法-1"><span class="nav-number">4.0.2.</span> <span class="nav-text">append()方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#toString-NaN"><span class="nav-number">4.0.3.</span> <span class="nav-text">toString()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SringBuffer"><span class="nav-number">5.</span> <span class="nav-text">SringBuffer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dongjianyu</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
