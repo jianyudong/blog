@@ -348,8 +348,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/12/20/Java动态代理(cglib实现)/" itemprop="url">
-                  Java动态代理(cglib实现)
+                <a class="post-title-link" href="/2015/12/20/Java动态代理(JDK实现)/" itemprop="url">
+                  Java动态代理(JDK实现)
                 </a>
               
             
@@ -392,11 +392,11 @@
       
         
           
-          　　JDK的动态代理机制只能代理实现了接口的类，而不能实现接口的类就不能实现JDK的动态代理，cglib是针对类来实现代理的，他的原理是对指定的目标类生成一个子类，并覆盖其中方法实现增强，但因为采用的是继承，所以不能对final修饰的类进行代理。　　下面是使用cglib实现动态代理的一个例子。需要导
+          　　jdk的api本身对动态代理就有很好的支持。在利用jdk的api实现动态代理的主要用到Proxy类和InvocationHandler接口。被代理的类必须实现接口，下面是一个简单的测试实例。12345接口类代码	   package com.bobohe.proxy;public interfa
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/12/20/Java动态代理(cglib实现)/#more" rel="contents">
+            <a class="btn" href="/2015/12/20/Java动态代理(JDK实现)/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -447,8 +447,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/12/20/Java动态代理(JDK实现)/" itemprop="url">
-                  Java动态代理(JDK实现)
+                <a class="post-title-link" href="/2015/12/20/Java动态代理(cglib实现)/" itemprop="url">
+                  Java动态代理(cglib实现)
                 </a>
               
             
@@ -491,11 +491,11 @@
       
         
           
-          　　jdk的api本身对动态代理就有很好的支持。在利用jdk的api实现动态代理的主要用到Proxy类和InvocationHandler接口。被代理的类必须实现接口，下面是一个简单的测试实例。12345接口类代码	   package com.bobohe.proxy;public interfa
+          　　JDK的动态代理机制只能代理实现了接口的类，而不能实现接口的类就不能实现JDK的动态代理，cglib是针对类来实现代理的，他的原理是对指定的目标类生成一个子类，并覆盖其中方法实现增强，但因为采用的是继承，所以不能对final修饰的类进行代理。　　下面是使用cglib实现动态代理的一个例子。需要导
           ...
 
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/12/20/Java动态代理(JDK实现)/#more" rel="contents">
+            <a class="btn" href="/2015/12/20/Java动态代理(cglib实现)/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
