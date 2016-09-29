@@ -1,0 +1,575 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="nginx," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="什么是 nginx　　Nginx（发音同engine x）是一个网页服务器，它能反向代理HTTP, HTTPS, SMTP, POP3, IMAP的协议链接，以及一个负载均衡器和一个HTTP缓存。　　起初是供俄国大型的门户网站及搜索引擎Rambler（俄语：Рамблер）使用。此软件BSD-like协议下发行，可以在UNIX、GNU/Linux、BSD、Mac OS X、Solaris，以及Mi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用nginx实现负载均衡">
+<meta property="og:url" content="http://yoursite.com/2016/09/29/利用nginx实现负载均衡/index.html">
+<meta property="og:site_name" content="Code Dongjianyu">
+<meta property="og:description" content="什么是 nginx　　Nginx（发音同engine x）是一个网页服务器，它能反向代理HTTP, HTTPS, SMTP, POP3, IMAP的协议链接，以及一个负载均衡器和一个HTTP缓存。　　起初是供俄国大型的门户网站及搜索引擎Rambler（俄语：Рамблер）使用。此软件BSD-like协议下发行，可以在UNIX、GNU/Linux、BSD、Mac OS X、Solaris，以及Mi">
+<meta property="og:updated_time" content="2016-09-29T01:04:26.171Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="利用nginx实现负载均衡">
+<meta name="twitter:description" content="什么是 nginx　　Nginx（发音同engine x）是一个网页服务器，它能反向代理HTTP, HTTPS, SMTP, POP3, IMAP的协议链接，以及一个负载均衡器和一个HTTP缓存。　　起初是供俄国大型的门户网站及搜索引擎Rambler（俄语：Рамблер）使用。此软件BSD-like协议下发行，可以在UNIX、GNU/Linux、BSD、Mac OS X、Solaris，以及Mi">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/09/29/利用nginx实现负载均衡/"/>
+
+  <title> 利用nginx实现负载均衡 | Code Dongjianyu </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Code Dongjianyu</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            Über
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                利用nginx实现负载均衡
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2016-09-29T00:00:00+08:00" content="2016-09-29">
+              2016-09-29
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="什么是-nginx"><a href="#什么是-nginx" class="headerlink" title="什么是 nginx"></a>什么是 nginx</h2><p>　　Nginx（发音同engine x）是一个网页服务器，它能反向代理HTTP, HTTPS, SMTP, POP3, IMAP的协议链接，以及一个负载均衡器和一个HTTP缓存。<br>　　起初是供俄国大型的门户网站及搜索引擎Rambler（俄语：Рамблер）使用。此软件BSD-like协议下发行，可以在UNIX、GNU/Linux、BSD、Mac OS X、Solaris，以及Microsoft Windows等操作系统中运行。</p>
+<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><p>　　Nginx是一款面向性能设计的HTTP服务器，相较于Apache、lighttpd具有占有内存少，稳定性高等优势。与旧版本（&lt;=2.2）的Apache不同，nginx不采用每客户机一线程的设计模型，而是充分使用异步逻辑，削减了上下文调度开销，所以并发服务能力更强。整体采用模块化设计，有丰富的模块库和第三方模块库，配置灵活。 在Linux操作系统下，nginx使用epoll事件模型，得益于此，nginx在Linux操作系统下效率相当高。同时Nginx在OpenBSD或FreeBSD操作系统上采用类似于epoll的高效事件模型kqueue</p>
+<h2 id="负载均衡方法"><a href="#负载均衡方法" class="headerlink" title="负载均衡方法"></a>负载均衡方法</h2><p>nginx支持以下负载均衡机制（或者方法）：<br>round-robin/轮询： 到应用服务器的请求以round-robin/轮询的方式被分发<br>least-connected/最少连接：下一个请求将被分派到活动连接数量最少的服务器<br>ip-hash/IP散列： 使用hash算法来决定下一个请求要选择哪个服务器(基于客户端IP地址)</p>
+<h2 id="默认负载均衡配置-轮询"><a href="#默认负载均衡配置-轮询" class="headerlink" title="默认负载均衡配置(轮询)"></a>默认负载均衡配置(轮询)</h2><p>nginx中最简单的负载均衡配置看上去大体如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">  http &#123;</div><div class="line">upstream myapp1 &#123;</div><div class="line">    server srv1.example.com;</div><div class="line">    server srv2.example.com;</div><div class="line">    server srv3.example.com;</div><div class="line">&#125;</div><div class="line"></div><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line"></div><div class="line">    location / &#123;</div><div class="line">        proxy_pass http://myapp1;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在上面的例子中， 同一个应用有3个实例分别运行在srv1-srv3。当没有特别指定负载均衡方法时， 默认为round-robin/轮询。所有请求被代理到服务器集群myapp1， 然后nginx实现HTTP负载均衡来分发请求。在nginx中反向代理的实现包括HTTP, HTTPS, FastCGI, uwsgi, SCGI, 和 memcached的负载均衡。要配置负载均衡用HTTPS替代HTTP，只要使用”https”作为协议即可。为FastCGI, uwsgi, SCGI, 或 memcached 搭建负载均衡时，只要使用相应的fastcgi_pass, uwsgi_pass, scgi_pass, 和 memcached_pass指令</p>
+<h2 id="最少连接负载均衡"><a href="#最少连接负载均衡" class="headerlink" title="最少连接负载均衡"></a>最少连接负载均衡</h2><p>另一个负载均衡方式是least-connected/最少连接。当某些请求需要更长时间来完成时，最少连接可以更公平的控制应用实例上的负载。使用最少连接负载均衡时，nginx试图尽量不给已经很忙的应用服务器增加过度的请求， 而是分配新请求到不是那么忙的服务器实例。nginx中通过在服务器集群配置中使用least_conn指令来激活最少连接负载均衡方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">upstream myapp1 &#123;</div><div class="line">least_conn;</div><div class="line">server srv1.example.com;</div><div class="line">server srv2.example.com;</div><div class="line">server srv3.example.com;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<h2 id="会话持久化-ip-hash"><a href="#会话持久化-ip-hash" class="headerlink" title="会话持久化(ip-hash)"></a>会话持久化(ip-hash)</h2><p>请注意，在轮询和最少连接负载均衡方法中，每个客户端的后续请求被分派到不同的服务器。对于同一个客户端没有任何方式保证发送给同一个服务器。<br>如果需要将一个客户端绑定给某个特定的应用服务器——用另一句话说，将客户端会话”沾住”或者”持久化”，以便总是能选择特定服务器——，那么可以使用ip-hash负载均衡机制。使用ip-hash时，客户端IP地址作为hash key使用，用来决策选择服务器集群中的哪个服务器来处理这个客户端的请求。这个方法保证从同一个客户端发起的请求总是定向到同一台服务器，除非服务器不可用。要配置使用ip-hash负载均衡，只要在服务器集群配置中使用ip_hash指令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">upstream myapp1 &#123;</div><div class="line">ip_hash;</div><div class="line">server srv1.example.com;</div><div class="line">server srv2.example.com;</div><div class="line">server srv3.example.com;</div><div class="line">&#125;</div><div class="line">除了上面的配置以外，Nginx还支持给每台服务器设置权重：</div><div class="line"></div><div class="line">http &#123;</div><div class="line">upstream myapp1 &#123;</div><div class="line">    ip_hash;</div><div class="line">    server srv1.example.com weight=3;</div><div class="line">    server srv2.example.com;</div><div class="line">    server srv3.example.com;</div><div class="line">&#125;</div><div class="line"></div><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line"></div><div class="line">    location / &#123;</div><div class="line">        proxy_pass http://myapp1;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在srv1中加了一个权值3，这样分配给srv1的请求数将是其它机器的3倍，比如有5个请求，会分给srv13个，srv2和srv3各一个。<br>least_conn和ip_hash也同样支持权重分配，配置方法和上面一样。</p>
+<h2 id="错误检测"><a href="#错误检测" class="headerlink" title="错误检测"></a>错误检测</h2><p>Nginx在分配任务时会查看（被动）各台服务器的运行状态，如果分配给某台服务器的请求没有正确响应那么，Nginx会将该机器暂时标为不可用（请求仍会分配给其它服务器），可以通过max_fails参数（默认为1）来设置最大重试次数,用fail_timeout(默认为10s)来设置超时时间。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">http &#123;</div><div class="line">upstream myapp1 &#123;</div><div class="line">    ip_hash;</div><div class="line">    server srv1.example.com max_fails=2 fail_timeout=30s;</div><div class="line">    server srv2.example.com;</div><div class="line">    server srv3.example.com;</div><div class="line">&#125;</div><div class="line"></div><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line"></div><div class="line">    location / &#123;</div><div class="line">        proxy_pass http://myapp1;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>max_fails=2 fail_timeout=30s意思是在30秒内，连接该服务器连续2次失败，刚在接下来的30秒内，不再分配新的请求给这台机器（30秒之后新请求会重新尝试分配给该服务器）。<br>如果设置max_fails=0,那么Nginx不检测这台机器的状况。</p>
+<p>如果想让某台机器下线，可以设置成down，如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">http &#123;</div><div class="line">upstream myapp1 &#123;</div><div class="line">    ip_hash;</div><div class="line">    server srv1.example.com max_fails=2 fail_timeout=30s;</div><div class="line">    server srv2.example.com down;</div><div class="line">    server srv3.example.com;</div><div class="line">&#125;</div><div class="line"></div><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line"></div><div class="line">    location / &#123;</div><div class="line">        proxy_pass http://myapp1;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">`</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/nginx/" rel="tag">#nginx</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/20/算法复杂度分析/" rel="next" title="算法复杂度分析">
+                <i class="fa fa-chevron-left"></i> 算法复杂度分析
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://www.qq1234.org/uploads/allimg/150403/094200GL-14.jpg"
+               alt="dongjianyu" />
+          <p class="site-author-name" itemprop="name">dongjianyu</p>
+          <p class="site-description motion-element" itemprop="description">��һ�ж�������ʯ֮�ŵ�ѡ��</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">20</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是-nginx"><span class="nav-number">1.</span> <span class="nav-text">什么是 nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特点"><span class="nav-number">2.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#负载均衡方法"><span class="nav-number">3.</span> <span class="nav-text">负载均衡方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#默认负载均衡配置-轮询"><span class="nav-number">4.</span> <span class="nav-text">默认负载均衡配置(轮询)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最少连接负载均衡"><span class="nav-number">5.</span> <span class="nav-text">最少连接负载均衡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#会话持久化-ip-hash"><span class="nav-number">6.</span> <span class="nav-text">会话持久化(ip-hash)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#错误检测"><span class="nav-number">7.</span> <span class="nav-text">错误检测</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dongjianyu</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
