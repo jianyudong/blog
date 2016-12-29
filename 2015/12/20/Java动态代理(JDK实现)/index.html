@@ -5,10 +5,10 @@
   
 
 
-<html class="theme-next mist use-motion">
+<html class="theme-next mist use-motion" lang="zh-CN">
 <head>
   <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
 
@@ -63,7 +63,7 @@
 
 
 
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
@@ -97,24 +97,35 @@
 
 
 
-<script type="text/javascript" id="hexo.configuration">
+<script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
+    root: '/',
     scheme: 'Mist',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
     duoshuo: {
-      userId: 0,
+      userId: '0',
       author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: "",
+      labels: ""
     }
   };
 </script>
 
 
 
-
   <link rel="canonical" href="http://yoursite.com/2015/12/20/Java动态代理(JDK实现)/"/>
+
+
+
+
 
   <title> Java动态代理(JDK实现) | Code Dongjianyu </title>
 </head>
@@ -151,7 +162,9 @@
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
-  <p class="site-subtitle"></p>
+    
+      <p class="site-subtitle"></p>
+    
 </div>
 
 <div class="site-nav-toggle">
@@ -174,7 +187,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            Home
           </a>
         </li>
       
@@ -184,7 +197,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
-            Über
+            About
           </a>
         </li>
       
@@ -194,7 +207,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            Archives
           </a>
         </li>
       
@@ -216,6 +229,8 @@
   
 </nav>
 
+
+
  </div>
     </header>
 
@@ -229,13 +244,26 @@
     
 
   
-  
 
   
   
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/20/Java动态代理(JDK实现)/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="dongjianyu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="http://www.qq1234.org/uploads/allimg/150403/094200GL-14.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Code Dongjianyu">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Code Dongjianyu" src="">
+    </span>
+  </span>
 
     
       <header class="post-header">
@@ -254,13 +282,11 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
-            <time itemprop="dateCreated" datetime="2015-12-20T00:00:00+08:00" content="2015-12-20">
-              2015-12-20
-            </time>
+            
+
+            
+
+            
           </span>
 
           
@@ -275,6 +301,9 @@
           
 
           
+
+          
+
         </div>
       </header>
     
@@ -310,11 +339,12 @@
       
     </div>
 
+
     <footer class="post-footer">
       
         <div class="post-tags">
           
-            <a href="/tags/java/" rel="tag">#java</a>
+            <a href="/tags/java/" rel="tag"># java</a>
           
         </div>
       
@@ -323,16 +353,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/12/20/Java动态代理(cglib实现)/" rel="next" title="Java动态代理(cglib实现)">
-                <i class="fa fa-chevron-left"></i> Java动态代理(cglib实现)
+              <a href="/2015/12/02/纳兰容若/" rel="next" title="纳兰心事有谁知">
+                <i class="fa fa-chevron-left"></i> 纳兰心事有谁知
               </a>
             
           </div>
 
+          <span class="post-nav-divider"></span>
+
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/02/04/StringBuilder与StringBuffer源码分析/" rel="prev" title="StringBuider与StringBuffer源码浅析">
-                StringBuider与StringBuffer源码浅析 <i class="fa fa-chevron-right"></i>
+              <a href="/2015/12/20/Java动态代理(cglib实现)/" rel="prev" title="Java动态代理(cglib实现)">
+                Java动态代理(cglib实现) <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -380,31 +412,25 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Inhaltsverzeichnis
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Übersicht
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel ">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="http://www.qq1234.org/uploads/allimg/150403/094200GL-14.jpg"
                alt="dongjianyu" />
           <p class="site-author-name" itemprop="name">dongjianyu</p>
-          <p class="site-description motion-element" itemprop="description">这一切都是命运石之门的选择</p>
+          <p class="site-description motion-element" itemprop="description">��һ�ж�������ʯ֮�ŵ�ѡ��</p>
         </div>
         <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">21</span>
-              <span class="site-state-item-name">Artikel</span>
-            </a>
-          </div>
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
 
           
 
@@ -412,7 +438,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags">
                 <span class="site-state-item-count">10</span>
-                <span class="site-state-item-name">Tags</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -431,19 +457,11 @@
         
         
 
+        
+
+
       </section>
 
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <p class="post-toc-empty">Dieser Artikel hat kein Inhaltsverzeichnis</p>
-            
-          </div>
-        </section>
       
 
     </div>
@@ -461,21 +479,12 @@
   &copy; 
   <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="fa fa-"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">dongjianyu</span>
 </div>
 
-<div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
-</div>
 
-<div class="theme-info">
-  Theme -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
-  </a>
-</div>
 
         
 
@@ -561,6 +570,17 @@
 
 
 
+	
+
+
+
+
+
+  
+
+
+
+
   
   
 
@@ -569,6 +589,9 @@
   
 
   
+
+  
+
 
 </body>
 </html>

@@ -5,10 +5,10 @@
   
 
 
-<html class="theme-next mist use-motion">
+<html class="theme-next mist use-motion" lang="zh-CN">
 <head>
   <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
 
@@ -63,7 +63,7 @@
 
 
 
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
@@ -84,36 +84,47 @@
 
 
 
-<meta name="description" content="这一切都是命运石之门的选择">
+<meta name="description" content="��һ�ж�������ʯ֮�ŵ�ѡ��">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Code Dongjianyu">
 <meta property="og:url" content="http://yoursite.com/page/5/index.html">
 <meta property="og:site_name" content="Code Dongjianyu">
-<meta property="og:description" content="这一切都是命运石之门的选择">
+<meta property="og:description" content="��һ�ж�������ʯ֮�ŵ�ѡ��">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Code Dongjianyu">
-<meta name="twitter:description" content="这一切都是命运石之门的选择">
+<meta name="twitter:description" content="��һ�ж�������ʯ֮�ŵ�ѡ��">
 
 
 
-<script type="text/javascript" id="hexo.configuration">
+<script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
+    root: '/',
     scheme: 'Mist',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
     duoshuo: {
-      userId: 0,
+      userId: '0',
       author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: "",
+      labels: ""
     }
   };
 </script>
 
 
 
-
   <link rel="canonical" href="http://yoursite.com/page/5/"/>
+
+
+
+
 
   <title> Code Dongjianyu </title>
 </head>
@@ -152,7 +163,9 @@
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
-  <p class="site-subtitle"></p>
+    
+      <p class="site-subtitle"></p>
+    
 </div>
 
 <div class="site-nav-toggle">
@@ -175,7 +188,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            Home
           </a>
         </li>
       
@@ -185,7 +198,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
-            Über
+            About
           </a>
         </li>
       
@@ -195,7 +208,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            Archives
           </a>
         </li>
       
@@ -217,6 +230,8 @@
   
 </nav>
 
+
+
  </div>
     </header>
 
@@ -230,6 +245,120 @@
       
 
   
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/09/08/TCP若干问题总结/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="dongjianyu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="http://www.qq1234.org/uploads/allimg/150403/094200GL-14.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Code Dongjianyu">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Code Dongjianyu" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/08/TCP若干问题总结/" itemprop="url">
+                  TCP/IP若干问题总结
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          OSI，TCP/IP，五层协议的体系结构，以及各层协议OSI分层 （7层）：物理层、数据链路层、网络层、传输层、会话层、表示层、应用层。TCP/IP分层（4层）：网络接口层、 网际层、运输层、 应用层。五层协议 （5层）：物理层、数据链路层、网络层、运输层、 应用层。每一层的协议如下：物理层：RJ4
+          ...
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/08/TCP若干问题总结/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
   
 
   
@@ -237,6 +366,20 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/07/06/新的征程/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="dongjianyu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="http://www.qq1234.org/uploads/allimg/150403/094200GL-14.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Code Dongjianyu">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Code Dongjianyu" src="">
+    </span>
+  </span>
 
     
       <header class="post-header">
@@ -258,13 +401,11 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
-            <time itemprop="dateCreated" datetime="2015-07-06T00:00:00+08:00" content="2015-07-06">
-              2015-07-06
-            </time>
+            
+
+            
+
+            
           </span>
 
           
@@ -279,6 +420,9 @@
           
 
           
+
+          
+
         </div>
       </header>
     
@@ -295,12 +439,13 @@
           新的开始　　折腾的一天终于是用github把个人的博客搭好了，今天偶然得一哥们的公司招聘，回想自己这些年的学习经历，不禁感叹时间过的真快，自学的期间确实走了很多弯路，从明天开始，继续努力，后期也会把其他平台的博客都迁移到这来，　　晚安，世界！！！
 
           
-
+          <!--noindex-->
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/07/06/新的征程/#more" rel="contents">
-              Weiterlesen &raquo;
+              Read more &raquo;
             </a>
           </div>
+          <!--/noindex-->
         
       
     </div>
@@ -312,6 +457,7 @@
     <div>
       
     </div>
+
 
     <footer class="post-footer">
       
@@ -361,21 +507,24 @@
 
       
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="http://www.qq1234.org/uploads/allimg/150403/094200GL-14.jpg"
                alt="dongjianyu" />
           <p class="site-author-name" itemprop="name">dongjianyu</p>
-          <p class="site-description motion-element" itemprop="description">这一切都是命运石之门的选择</p>
+          <p class="site-description motion-element" itemprop="description">��һ�ж�������ʯ֮�ŵ�ѡ��</p>
         </div>
         <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">21</span>
-              <span class="site-state-item-name">Artikel</span>
-            </a>
-          </div>
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
 
           
 
@@ -383,7 +532,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags">
                 <span class="site-state-item-count">10</span>
-                <span class="site-state-item-name">Tags</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -401,6 +550,9 @@
 
         
         
+
+        
+
 
       </section>
 
@@ -421,21 +573,12 @@
   &copy; 
   <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="fa fa-"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">dongjianyu</span>
 </div>
 
-<div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
-</div>
 
-<div class="theme-info">
-  Theme -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
-  </a>
-</div>
 
         
 
@@ -517,6 +660,17 @@
 
 
 
+	
+
+
+
+
+
+  
+
+
+
+
   
   
 
@@ -525,6 +679,9 @@
   
 
   
+
+  
+
 
 </body>
 </html>
